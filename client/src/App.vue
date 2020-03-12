@@ -18,6 +18,12 @@
 .icon {
   font-size: 24px !important;
 }
+.b-radio.radio input[type=radio]:checked+.check, .b-radio.radio:hover input[type=radio]+.check {
+    border-color: #00d1b2 !important;
+}
+.b-radio.radio input[type=radio]+.check:before {
+    background: #00d1b2 !important;
+}
 </style>
 <script>
 import AppHeader from './components/Header/Header.vue'
