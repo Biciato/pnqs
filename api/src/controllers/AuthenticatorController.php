@@ -93,7 +93,7 @@ class AuthenticatorController
   private function get_user_by_email_and_cnpj($username, $cnpj){
     $user = UserModel::where('username', "=", $username)->where('CNPJ', '=', $cnpj)->first();
     if (empty($user))
-      return array("status" => "error", "message" => "Usuário não encontrado");
+      return array("status" => "error", "message" => "Usuário não encontrado. Por favor, verifique se os dados estão corretos");
     return $user;
   }
 

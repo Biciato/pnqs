@@ -1,6 +1,4 @@
 <template>
-	<ValidationObserver v-slot="{ invalid }">
-		<form class="">
 			<div class="modal-card">
 				<header class="modal-card-head">
 					<h3 class="title">Recuperar senha</h3>
@@ -19,7 +17,7 @@
 						<div class="column">
 							<b-field label="Digite seu e-mail">
 								<ValidationProvider name="email" rules="required|email" v-slot="{ failedRules, errors }">
-									<b-input type="text" name="email" v-model="remember.email" :disabled="isLoading"></b-input>
+									<b-input type="text" name="username" v-model="remember.email" :disabled="isLoading"></b-input>
 									<span style="color: red">{{ failedRules.required ? 'E-mail é necessário' : errors[0] }}</span>
 									</ValidationProvider>
 							</b-field>
@@ -28,7 +26,10 @@
 					<div class="columns">
 						<div class="column">
 							<b-field label="Digite seu CNPJ">
-								<b-input type="text" name="cnpj" v-model="remember.cnpj" :disabled="isLoading" v-mask="'##.###.###/####-##'"></b-input>
+								<ValidationProvider name="cnpj" rules="required|cnpj" v-slot="{ failedRules, errors }">
+									<b-input :disabled="isLoading" name="cnpj" v-model="remember.cnpj" v-cleave="masks.cnpj" maxlength="18"></b-input>
+									<span style="color: red">{{ failedRules.required ? 'CNPJ é necessário' : errors[0] }}</span>
+								</ValidationProvider>
 							</b-field>
 						</div>
 					</div>
@@ -44,29 +45,34 @@
 					</div>
 				</section>
 				<footer class="modal-card-foot">
-					<button type="button" class="button is-primary" :class="{'is-loading': isLoading}" @click="getPassword()" :disabled="invalid">Salvar</button>
+					<button type="button" class="button is-primary" :class="{'is-loading': isLoading}" @click="getPassword()">Salvar</button>
 					<button type="button" class="button" :disabled="isLoading" @click="$parent.close()">Cancelar</button>
 				</footer>
 			</div>
-		</form>
-	</ValidationObserver>
+	
 </template>
 
 <script>
 import UserService from '../../services/user.service'
-import { ValidationProvider, ValidationObserver } from 'vee-validate';
+import { ValidationProvider } from 'vee-validate';
 
 export default {
 	name: "RememberPassword",
 	components: {
 		ValidationProvider,
-		ValidationObserver
 	},
 	data(){
 		return {
 			isLoading: false,
 			remember: {},
 			serverErrors: [],
+			masks: {
+				cnpj: {
+					delimiters: ['.', '.', '/', '-'],
+					blocks: [2,3,3,4,2],
+					numericOnly: true
+				}
+			}
 		}
 	},
 	methods: {

@@ -23,14 +23,23 @@
 						<font-awesome-icon icon="user-circle" />
 					</a>
 					<div class="navbar-dropdown">
-						<a href="javascript:void(0);" @click="logout()">Sair</a>
+						<div style="display: flex; justify-content: center;">
+							<a href="javascript:void(0);" @click="logout()">Sair</a>
+						</div>
 					</div>
 				</div>
 			</div>
 		</div>
 	</nav>
 </template>
-
+<style>
+.navbar.is-info {
+	background-color: #209cee !important;
+}
+.svg-inline--fa {
+	font-size: 20px !important;
+}
+</style>
 <script>
 import store from '../../store'
 

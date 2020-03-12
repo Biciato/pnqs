@@ -705,7 +705,7 @@ export default {
 				delete this.subscription["subgroup"]
 				this.getContacts()
 				this.getPlaces()
-				this.subscription.agree_examiners = res.result.agree_examiners.toString()
+				this.subscription.agree_examiners = this.$R.toString(this.$R.or(res.result.agree_examiners, []))
 			})
 		},
 		getContacts(){
