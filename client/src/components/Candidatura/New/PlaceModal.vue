@@ -152,7 +152,8 @@ export default {
 		"editedPlace.zipcode"(newValue){
 			var cep = newValue.split("-").join("")
 			if (cep.length >= 8) {
-				axios.get(`https://viacep.com.br/ws/${cep}/json/`).then((res) => {
+                axios.defaults.headers.common = {}
+				axios.get(`https://viacep.com.br/ws/${cep}/json/`, {ignoreheaders: true}).then((res) => {
 					let address = res.data
 					this.editedPlace.neighborhood = address.bairro
 					this.editedPlace.city = address.localidade

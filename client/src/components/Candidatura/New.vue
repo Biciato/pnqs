@@ -23,18 +23,18 @@
                             </div>
                             <h5 class="title is-5" v-if="['1','2'].includes(subscription.subscription_category_id)">Tema</h5>
                             <div class="block" v-if="subscription.subscription_category_id === '1'">
-                                <b-radio v-model="subscription.tema_igs" native-value="1">
+                                <b-radio v-model="subscription.tema_igs" native-value="Transformação Digital">
                                     <span class="is-size-7">Transformação Digital</span>
                                 </b-radio>
-                                <b-radio v-model="subscription.tema_igs" native-value="2">
+                                <b-radio v-model="subscription.tema_igs" native-value="Gestão Avançada">
                                     <span class="is-size-7">Gestão Avançada</span>
                                 </b-radio>
                             </div>
                             <div class="block" v-if="subscription.subscription_category_id === '2'">
-                                <b-radio v-model="subscription.tema_peos" native-value="1">
+                                <b-radio v-model="subscription.tema_peos" native-value="Gestão de Perdas">
                                     <span class="is-size-7">Gestão de Perdas</span>
                                 </b-radio>
-                                <b-radio v-model="subscription.tema_peos" native-value="2">
+                                <b-radio v-model="subscription.tema_peos" native-value="Gestão de Eficiência Energética">
                                     <span class="is-size-7">Gestão de Eficiência Energética</span>
                                 </b-radio>
                             </div>
@@ -331,7 +331,7 @@
                             <h3 class="title is-5">Cadastro das Práticas / Programas</h3>
                             <div class="columns">
                                 <div class="column">
-                                    <button class="button is-info" @click="isPraticasModalActive = true">Cadastrar Prática</button>
+                                    <a class="button is-info" @click="isPraticasModalActive = true">Cadastrar Prática</a>
                                 </div>
                             </div>
                             <hr>
@@ -344,7 +344,7 @@
                                         {{props.row.practice_category}}
                                     </b-table-column>
                                     <b-table-column :field="''" :label="'#'">
-                                        <button type="button" class="button is-danger is-small" @click="removePractice(props.row)">X</button>
+                                        <a class="button is-danger is-small" @click="removePractice(props.row)">X</a>
                                     </b-table-column>
                                 </template>
                                 <template slot="empty">
@@ -433,7 +433,7 @@
 import CommonData from './New/CommonData.vue'
 import PraticasModal from './New/PraticasModal.vue'
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
-// import ApiService from '../../services/api.service'
+import store from '../../store/index'
 
 export default {
 	components: {
@@ -468,6 +468,7 @@ export default {
                 subscription_practices: []
 			}
             this.subscription.subscription_category_id = newValue
+            store.commit('subscription/setSubscription', this.subscription)
 		}
 	},
 	created(){
@@ -505,21 +506,21 @@ export default {
             }
         },
         save() {
-            /* axios.post("/candidatura",
-                {
-                    ... this.subscription
-                },
-                {
-                    headers: {
-                    "X-Requested-With": "XMLHttpRequest",
-                    "X-CSRF-TOKEN": document
-                        .querySelector('meta[name="csrf-token"]')
-                        .getAttribute("content")
-                    }
-                }
-            )
-            .then(() => window.location.assign("/"))
-            .catch(() => (this.error = "Favor preencher todos os dados")); */
+            this.isLoading = true
+
+            store.dispatch('subscription/store', store.getters['subscription/get']).then(() => {
+                this.isLoading = false
+                this.$toast.open({
+                    message: 'Pedido enviado com sucesso!',
+                    type: 'is-success'
+                })
+                this.$router.push({path: "/candidaturas", params: {completed: true}})
+            }).catch((error) => {
+                this.isLoading = false
+                alert(error.data.message)
+                this.subscription.contacts = []
+                this.subscription.places = []
+            })
         },
 		addPractice(practice){
 			this.subscription.subscription_practices.push(practice)

@@ -64,7 +64,12 @@ export default {
 		doLogin() {
 			this.isLoading = true
             this.errors = []
-            store.dispatch('auth/login', [this.email, this.password])
+			store.dispatch('auth/login', [this.email, this.password]).then((resp) => {
+				if (resp) {
+					this.errors.push(resp.message)
+					this.isLoading = false
+				}
+			})
 		}
 	}
 }

@@ -109,7 +109,7 @@
 		<h2 class="subtitle is-6"> (No caso da categoria IGS e PEOS, informar onde a prática ou programa é aplicado)</h2>
 		<div class="columns" v-if="!canEdit">
 			<div class="column">
-				<button class="button is-info" @click="isPlacesModalActive = true">Cadastrar Local</button>
+				<a class="button is-info" @click="isPlacesModalActive = true">Cadastrar Local</a>
 			</div>
 		</div>
 		<div class="columns">
@@ -146,7 +146,7 @@
 		<h3 class="title is-5">Contatos</h3>
 		<div class="columns" v-if='!canEdit'>
 			<div class="column">
-				<button class="button is-info" @click="isContatosModalActive = true">Cadastrar Contato</button>
+				<a class="button is-info" @click="isContatosModalActive = true">Cadastrar Contato</a>
 			</div>
 		</div>
 		<div class="columns">
@@ -201,6 +201,7 @@ import moment from 'moment'
 import PlaceModal from './PlaceModal.vue'
 import ContatoModal from './ContactModal.vue'
 import CleaveD from '../../../directives/index'
+import store from '../../../store/index'
 
 export default {
 	props: ["subscription", "canEdit"],
@@ -234,7 +235,7 @@ export default {
 	},
 	watch: {
 		'editedSubscription'(){
-			this.$emit('edited', this.editedSubscription)
+			store.commit('subscription/setSubscription', this.editedSubscription)
 		}
 	},
 	created(){

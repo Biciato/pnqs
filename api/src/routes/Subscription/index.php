@@ -7,7 +7,7 @@ $app->get("/subscription/[{subscriptionId}]", function ($request, $response, $ar
   $subscriptionController = new SubscriptionController;
   $subscriptions = $subscriptionController->get($subscriptionId, $userLogged);
   if (is_array($subscriptions))
-    return $response->withJson(["message" => $subscriptions["message"]], 400);
+    return $response->withJson(["message" => $subscriptions["message"]], 200);
   return $response->withJson(["message" => "Retornado com sucesso", "result" => $subscriptions], 200);
 })->add($auth_middleware);
 
@@ -17,7 +17,7 @@ $app->get("/subscriptions/[{subscriptionYear}]", function ($request, $response, 
   $subscriptionController = new SubscriptionController;
   $subscriptions = $subscriptionController->getAll($subscriptionYear, $userLogged);
   if (is_array($subscriptions))
-    return $response->withJson(["message" => $subscriptions["message"]], 400);
+    return $response->withJson(["message" => $subscriptions["message"]], 200);
   return $response->withJson(["message" => "Retornado com sucesso", "result" => $subscriptions], 200);
 })->add($auth_middleware);
 
@@ -36,14 +36,14 @@ $app->post("/subscription/", function ($request, $response, $args) {
 
   $params = $request->getParsedBody();
 
-  $contacts = $params["contacts"];
-  unset($params["contacts"]);
+  $contacts = $params["subscription_contacts"];
+  unset($params["subscription_contacts"]);
 
-  $places = $params["places"];
-  unset($params["places"]);
+  $places = $params["subscription_places"];
+  unset($params["subscription_places"]);
 
-  $praticas = $params["practices"];
-  unset($params["practices"]);
+  $praticas = $params["subscription_practices"];
+  unset($params["subscription_practices"]);
 
   $subscriptionController = new SubscriptionController;
   $params["user_id"] = $userLogged->id;

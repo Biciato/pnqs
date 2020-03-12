@@ -1,5 +1,6 @@
 import ApiService from './api.service'
 import { TokenService } from './storage.service'
+import store from '../store/index'
 
 class AuthenticationError extends Error {
     constructor(errorCode, message) {
@@ -21,6 +22,23 @@ const SubscriptionService = {
         const requestData = {
             method: 'get',
             url: "/subscription/",
+            headers: { 'X-Token': store.getters['auth/accessToken'] }
+        }
+
+        try {
+            const response = await ApiService.customRequest(requestData)
+            
+            ApiService.mount401Interceptor();
+
+            return response.data.result
+        } catch (error) {
+            throw new AuthenticationError(error.response.status, error.response.data.detail)
+        }
+    },
+    show: async function(id) {
+        const requestData = {
+            method: 'get',
+            url: `/subscription/${id}`,
             headers: { 'X-Token': TokenService.getToken() }
         }
 
@@ -34,11 +52,14 @@ const SubscriptionService = {
             throw new AuthenticationError(error.response.status, error.response.data.detail)
         }
     },
-    show: async function(id) {
+    store: async function(subscription) {
         const requestData = {
-            method: 'get',
-            url: `/subscription/${id}`,
-            headers: { 'X-Token': TokenService.getToken() }
+            method: 'post',
+            url: `/subscription/`,
+            headers: { 'X-Token': TokenService.getToken() },
+            data: {
+                ...subscription
+            }
         }
 
         try {

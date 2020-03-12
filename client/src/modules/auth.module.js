@@ -16,6 +16,10 @@ const getters = {
         return state.accessToken ? true : false
     },
 
+    accessToken: (state) => {
+        return state.accessToken 
+    },
+
     authenticationErrorCode: (state) => {
         return state.authenticationErrorCode
     },
@@ -46,7 +50,7 @@ const actions = {
                 commit('loginError', {errorCode: e.errorCode, errorMessage: e.message})
             }
 
-            return false
+            return e
         }
     },
 

@@ -67,6 +67,7 @@
 
 <script>
 import SubscriptionService from '../../services/subscription.service'
+import store from '../../store/index'
 
 export default {
 	data() {
@@ -83,12 +84,17 @@ export default {
 	methods: {
 		load(){
 			this.isLoading = true
-			SubscriptionService.index().then((resp) => {
-				this.tableData = resp.result
-				this.isLoading = false
-			}).catch((error) => {
-				this.isLoading = false
-				alert(error.message)
+			store.dispatch('subscription/index').then((resp) => {
+				if (resp) {
+					this.$buefy.dialog.alert({
+						title: 'Erro',
+						message: 'Ocorreu um erro no sistema. Favor tentar mais tarde ou contactar o administrador.'
+					})
+					this.isLoading = false
+				} else {
+					this.tableData = store.getters['subscription/index']
+					this.isLoading = false
+				}
 			})
 		},
 		remove(id){
