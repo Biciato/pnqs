@@ -3,7 +3,7 @@
 		<div class="navbar-brand">
 			<!-- navbar items, navbar burger... -->
 			<a class="navbar-item">
-				<img src="../../assets/logo-pnqs.png" alt="">
+				<img :src="image" alt="">
 				<h1>&nbsp;&nbsp;PNQS</h1>
 			</a>
 			<div class="navbar-burger">
@@ -41,12 +41,20 @@
 }
 </style>
 <script>
+import imageDev from '../../assets/logo-pnqs.png'
 import store from '../../store'
 
 export default {
 	name: "Header",
+	data() {
+		return {
+			image: process.env.NODE_ENV === "production"
+                  ? 'dist/img/logo-pnqs.png'
+                  : imageDev
+		}
+	},
 	computed: {
-		loggedIn() { return store.getters['auth/loggedIn'] }
+		loggedIn() { console.log(this.image); return store.getters['auth/loggedIn'] }
 	},
 	methods: {
 		logout(){
