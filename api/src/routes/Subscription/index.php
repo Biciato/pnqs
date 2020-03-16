@@ -11,11 +11,12 @@ $app->get("/subscription/[{subscriptionId}]", function ($request, $response, $ar
   return $response->withJson(["message" => "Retornado com sucesso", "result" => $subscriptions], 200);
 })->add($auth_middleware);
 
-$app->get("/subscriptions/[{subscriptionYear}]", function ($request, $response, $args){
+$app->post("/subscriptions", function ($request, $response, $args){
   $userLogged = $request->getAttribute('user_logged');
-  $subscriptionYear = $args["subscriptionYear"];
+  $params = $request->getParsedBody();
+  $filters = $params;
   $subscriptionController = new SubscriptionController;
-  $subscriptions = $subscriptionController->getAll($subscriptionYear, $userLogged);
+  $subscriptions = $subscriptionController->getAll($filters, $userLogged);
   if (is_array($subscriptions))
     return $response->withJson(["message" => $subscriptions["message"]], 200);
   return $response->withJson(["message" => "Retornado com sucesso", "result" => $subscriptions], 200);

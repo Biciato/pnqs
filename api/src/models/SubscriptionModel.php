@@ -24,6 +24,35 @@ class SubscriptionModel extends CustomModel
     return $query->where('user_id', "=", $id);
   }
 
+  public function scopeFilter($query, $filters) {
+    if ($filters['year']) {
+      $query->where('year', '=', $filters['year']);
+    }
+    if ($filters['status']) {
+      $query->where('status', '=', $filters['status']);
+    }
+    if ($filters['cnpj']) {
+      $query->where('document_id', 'LIKE', "%{$filters['cnpj']}%");
+    }
+    if ($filters['razao_social']) {
+      $query->where('name', 'LIKE', "%{$filters['razao_social']}%");
+    }
+    if ($filters['category']) {
+      $query->where('subscription_category_id', '=', $filters['category']);
+    }
+    return $query
+            ->with("user")
+            ->with("companysize")
+            ->with("practices")
+            ->with("subcategory")
+            ->with("contacts")
+            ->with("places")
+            ->with("category")
+            ->with("group")
+            ->with("subgroup")
+            ->where("removed", "=", 0);
+  }
+
   public function user(){
     return $this->belongsTo("UserModel", "user_id");
   }
@@ -36,7 +65,7 @@ class SubscriptionModel extends CustomModel
     return $this->belongsTo("SubscriptionSubCategoryModel", "subscription_subcategory_id");
   }
 
-  public function companysize(){
+  public function companysize() {
     return $this->belongsTo("SubscriptionCompanySizeModel", "subscription_company_size_id");
   }
 

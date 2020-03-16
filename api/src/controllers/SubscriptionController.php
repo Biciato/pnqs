@@ -29,14 +29,15 @@ class SubscriptionController
     }
   }
 
-  public function getAll($subscriptionYear, $user){
+  public function getAll($filters, $user){
+    $subscription = new SubscriptionModel;
     if (!$user->is_admin) {
       return SubscriptionModel::with("companysize")->with("practices")->with("subcategory")->with("contacts")->with("places")->with("category")->with("group")->with("subgroup")->fromLoggedUser($user->id)->where("removed", "=", 0)->where("active", "=", 1)->get();
     }else{
       if ($user->id == 3){
         return SubscriptionModel::with("user")->with("companysize")->with("practices")->with("subcategory")->with("contacts")->with("places")->with("category")->with("group")->with("subgroup")->where("year", "=", $subscriptionYear)->where("removed", "=", 0)->get();
       }
-      return SubscriptionModel::with("user")->with("companysize")->with("practices")->with("subcategory")->with("contacts")->with("places")->with("category")->with("group")->with("subgroup")->where("year", "=", $subscriptionYear)->where("reviewer_id", "=", $user->id)->where("removed", "=", 0)->get();
+      return $subscription->filter($filters)->get();
     }
   }
 

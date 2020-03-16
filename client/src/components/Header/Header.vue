@@ -3,7 +3,7 @@
 		<div class="navbar-brand">
 			<!-- navbar items, navbar burger... -->
 			<a class="navbar-item">
-				<img :src="image" alt="">
+				<img src="../../assets/logo-pnqs.png" alt="">
 				<h1>&nbsp;&nbsp;PNQS</h1>
 			</a>
 			<div class="navbar-burger">
@@ -43,15 +43,8 @@
 <script>
 import store from '../../store'
 
-import image from '../../assets/logo-pnqs.png'
-
 export default {
 	name: "Header",
-	data() {
-		return {
-			image
-		}
-	},
 	computed: {
 		loggedIn() { return store.getters['auth/loggedIn'] }
 	},

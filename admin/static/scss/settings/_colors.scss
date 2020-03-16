@@ -1,0 +1,46 @@
+
+//Color list
+$white: #FFFFFF;
+$white-two: #f0f0f0;
+$gray: #bfbfbf;
+$lightgray: #c5c9d0;
+$nabyblue: #393e46;
+$blue: #00adb5;
+$green: #00b56a;
+$red: #e2574c;
+$yellow: #dbbc13;
+$lightblue: #00c4cf;
+$silver: #7c8799;
+
+//Base
+$background-color: $white-two;
+
+//Navbar
+$navbar-background-color: $silver;
+
+//Inputs
+$input-default-border-color: #e1e6ed;
+$icon-placeholder-color: $silver;
+$placeholder-color: $lightgray;
+$radio-button-background: #fcfcfc;
+
+//Dropzone
+$dropzone-border-color: $input-default-border-color;
+$dropzone-background-color: #fcfcfc;
+$dropzone-upload-icon-color: $dropzone-border-color;
+
+//Fonts
+$default-font-color: $nabyblue;
+$secondary-font-color: #999999;
+$thirdy-font-color: #d9d9d9;
+$link-hover-color: $lightblue;
+$button-disabled-font-color: #e1e1e1;
+$home-footer-gray: #808080;
+
+//Buttons
+$button-disabled-color: $gray;
+$button-default-color: $blue;
+$button-default-hover-color: $lightblue;
+
+//accordion
+$accordion-header-background: #f7f7f7;
