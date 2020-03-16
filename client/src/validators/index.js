@@ -14,10 +14,11 @@ extend('required', {
 	validate(value) {
 		return {
 			required: true,
-			valid: ['', null, undefined].indexOf(value) === -1
+			valid: ['', false, null, undefined].indexOf(value) === -1
 		};
 	},
-	computesRequired: true
+	computesRequired: true,
+	message: 'Campo obrigatório.'
 });
 
 extend('email', {

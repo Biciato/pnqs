@@ -10,8 +10,8 @@
                         <div class="column">
                             <b-field label="Categoria por porte ou tipo especial sugerida">
                                 <b-select v-model="practice.practice_category">
-                                    <option value="IGS">IGS</option>
-                                    <option value="PEOS">PEOS - Gestão de Perdas de Água  ou Gestão de Esgoto Sanitário</option>
+                                    <option value="IGS">IGS - Transformação Digital ou Gestão Avançada</option>
+                                    <option value="PEOS">PEOS - Gestão de Perdas ou Gestão de Eficiência Energética</option>
                                 </b-select>
                             </b-field>
                         </div>
@@ -46,17 +46,17 @@
                                 <b-field label="Denominação da Prática">
                                     <ValidationProvider name="practice_name" rules="required" v-slot="{ errors }">
                                         <b-input v-model="practice.name" name="practice_name"></b-input>
-                                        <span>{{ errors[0] }}</span>
+                                        <span style="color: red">{{ errors[0] }}</span>
                                     </ValidationProvider>
                                 </b-field>
-                                <p class="help is-danger">Práticas implantadas há mais de cinco anos não são elegíveis.</p>
+                                <p class="help is-danger">Serão válidos os Programas implementados a partir de 2017.</p>
                             </div>
                             <div class="column">
                                 <b-field label="Data de início da implantação">
                                     <ValidationProvider name="implantation_start_dt" rules="required" v-slot="{ errors }">
                                         <b-datepicker name="implantation_start_dt" v-model="practice.implantation_start_dt" placeholder="Selecione a data:" icon="calendar-today">
                                         </b-datepicker>
-                                        <span>{{ errors[0] }}</span>
+                                        <span style="color: red">{{ errors[0] }}</span>
                                     </ValidationProvider>
                                 </b-field>
                             </div>
@@ -66,7 +66,7 @@
                                 <b-field label="Resumo da Prática">
                                     <ValidationProvider name="resume" rules="required" v-slot="{ errors }">
                                         <b-input v-model="practice.resume" name="resume" type="textarea"></b-input>
-                                        <span>{{ errors[0] }}</span>
+                                        <span style="color: red">{{ errors[0] }}</span>
                                     </ValidationProvider>
                                 </b-field>
                                 <p class="has-text-danger is-size-7">
@@ -80,7 +80,7 @@
                                 <b-field label="Área, setor, divisão, departamento, grupo, equipe ou assemelhado, responsável pela Prática:">
                                     <ValidationProvider name="area" rules="required" v-slot="{ errors }">
                                         <b-input v-model="practice.area" name="area"></b-input>
-                                        <span>{{ errors[0] }}</span>
+                                        <span style="color: red">{{ errors[0] }}</span>
                                     </ValidationProvider>
                                 </b-field>
                             </div>
@@ -88,7 +88,7 @@
                                 <b-field label="Questões dos Critérios categoria AMEGSA Nível IV com os quais a prática tem mais relação: (Ex.: 2.d, 3.1b e 8.2a)">
                                     <ValidationProvider name="criteria_questions" rules="required" v-slot="{ errors }">
                                         <b-input v-model="practice.criteria_questions" name="criteria_questions"></b-input>
-                                        <span>{{ errors[0] }}</span>
+                                        <span style="color: red">{{ errors[0] }}</span>
                                     </ValidationProvider>
                                 </b-field>
                             </div>
@@ -98,7 +98,7 @@
                                 <b-field label="Partes interessadas mais beneficiadas pela Prática">
                                     <ValidationProvider name="stakeholders" rules="required" v-slot="{ errors }">
                                         <b-input v-model="practice.stakeholders" name="stakeholders"></b-input>
-                                        <span>{{ errors[0] }}</span>
+                                        <span style="color: red">{{ errors[0] }}</span>
                                     </ValidationProvider>
                                 </b-field>
                             </div>
@@ -108,7 +108,7 @@
                                 <b-field label="Resultados Alcançados">
                                     <ValidationProvider name="results" rules="required" v-slot="{ errors }">
                                         <b-input v-model="practice.results" name="results" type="textarea"></b-input>
-                                        <span>{{ errors[0] }}</span>
+                                        <span style="color: red">{{ errors[0] }}</span>
                                     </ValidationProvider>
                                 </b-field>
                                 <p class="has-text-danger is-size-7">
@@ -126,7 +126,7 @@
                                 <b-field label="Denominação do Programa de aumento da Eficiência">
                                     <ValidationProvider name="practice_name" rules="required" v-slot="{ errors }">
                                         <b-input v-model="practice.name" name="practice_name"></b-input>
-                                        <span>{{ errors[0] }}</span>
+                                        <span style="color: red">{{ errors[0] }}</span>
                                     </ValidationProvider>
                                 </b-field>
                                 <p class="help is-danger">Práticas implantadas há mais de cinco anos não são elegíveis.</p>
@@ -136,7 +136,7 @@
                                     <ValidationProvider name="implantation_start_dt" rules="required" v-slot="{ errors }">
                                         <b-datepicker  name="implantation_start_dt" v-model="practice.implantation_start_dt" placeholder="Selecione a data" icon="calendar-today">
                                         </b-datepicker>
-                                        <span>{{ errors[0] }}</span>
+                                        <span style="color: red">{{ errors[0] }}</span>
                                     </ValidationProvider>
                                 </b-field>
                             </div>
@@ -146,7 +146,7 @@
                                 <b-field label="Resumo do Programa">
                                     <ValidationProvider name="resume" rules="required" v-slot="{ errors }">
                                         <b-input v-model="practice.resume" name="resume" type="textarea"></b-input>
-                                        <span>{{ errors[0] }}</span>
+                                        <span style="color: red">{{ errors[0] }}</span>
                                     </ValidationProvider>
                                 </b-field>
                                 <p class="has-text-danger is-size-7">
@@ -160,7 +160,7 @@
                                 <b-field label="Resultados Alcançados">
                                     <ValidationProvider name="results" rules="required" v-slot="{ errors }">
                                         <b-input v-model="practice.results" name="results" type="textarea"></b-input>
-                                        <span>{{ errors[0] }}</span>
+                                        <span style="color: red">{{ errors[0] }}</span>
                                     </ValidationProvider>
                                 </b-field>
                                 <p class="has-text-danger is-size-7">

@@ -20,7 +20,7 @@
                 <b-field label="Razão Social">
                     <ValidationProvider name="name" rules="required" v-slot="{ errors }">
                         <b-input :disabled="canEdit" name="name" v-model="editedSubscription.name"></b-input>
-                        <span>{{ errors[0] }}</span>
+                        <span style="color: red">{{ errors[0] }}</span>
                     </ValidationProvider>
                 </b-field>
             </div>
@@ -28,7 +28,7 @@
                 <b-field label="Candidata (Responsável)">
                     <ValidationProvider name="cadidate" rules="required" v-slot="{ errors }">
                         <b-input :disabled="canEdit" name="cadidate" v-model="editedSubscription.candidate"></b-input>
-                        <span>{{ errors[0] }}</span>
+                        <span style="color: red">{{ errors[0] }}</span>
                     </ValidationProvider>
                 </b-field>
             </div>
@@ -47,7 +47,7 @@
         <div class="columns">
             <div class="column">
                 <b-field label="CNPJ">
-                    <ValidationProvider name="document" rules="required" v-slot="{ errors }">
+                    <ValidationProvider name="document" rules="required|cnpj" v-slot="{ errors }">
                         <b-input
                             :disabled="canEdit"
                             name="document"
@@ -55,7 +55,7 @@
                             v-cleave="masks.cnpj"
                             maxlength="18"
                         ></b-input>
-                        <span>{{ errors[0] }}</span>
+                        <span style="color: red">{{ errors[0] }}</span>
                     </ValidationProvider>
                 </b-field>
             </div>
@@ -76,7 +76,7 @@
                             placeholder="Selecione a data"
                             icon="calendar-today"
                         ></b-datepicker>
-                        <span>{{ errors[0] }}</span>
+                        <span style="color: red">{{ errors[0] }}</span>
                     </ValidationProvider>
                 </b-field>
             </div>
@@ -91,7 +91,7 @@
                             type="textarea"
                             v-model="editedSubscription.economic_activities"
                         ></b-input>
-                        <span>{{ errors[0] }}</span>
+                        <span style="color: red">{{ errors[0] }}</span>
                     </ValidationProvider>
                 </b-field>
             </div>
@@ -104,9 +104,10 @@
                             :disabled="canEdit"
                             name="qtd_pessoas"
                             type="number"
+                            min="1" step="1"
                             v-model="editedSubscription.persons_qt"
                         ></b-input>
-                        <span>{{ errors[0] }}</span>
+                        <span style="color: red">{{ errors[0] }}</span>
                     </ValidationProvider>
                 </b-field>
                 <p class="help is-danger">
@@ -114,7 +115,7 @@
                 </p>
             </div>
             <div class="column">
-                <b-field label="Percentual da força de trabalho - Apenas para unidades autônomas">
+                <b-field label="Percentual da força de trabalho - Apenas para unidades autônomas ou de apoio">
                     <b-input
                         :disabled="canEdit"
                         type="text"

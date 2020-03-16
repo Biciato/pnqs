@@ -12,7 +12,7 @@
                                 <b-field label="CEP">
                                     <ValidationProvider name="zipcode" rules="required" v-slot="{ errors }">
                                         <b-input type="text" name="zipcode" v-model="editedPlace.zipcode" autocomplete="post-code" :disabled="isLoading"></b-input>
-                                        <span>{{ errors[0] }}</span>
+                                        <span style="color: red">{{ errors[0] && 'Campo obrigatório' }}</span>
                                     </ValidationProvider>
                                 </b-field>
                             </div>
@@ -22,15 +22,15 @@
                                 <b-field label="Nome">
                                     <ValidationProvider name="name" rules="required" v-slot="{ errors }">
                                         <b-input type="text" name="name" v-model="editedPlace.name"></b-input>
-                                        <span>{{ errors[0] }}</span>
+                                        <span style="color: red">{{ errors[0] && 'Campo obrigatório' }}</span>
                                     </ValidationProvider>
                                 </b-field>
                             </div>
                             <div class="column">
                                 <b-field label="Quantidade de Pessoas na força de trabalho (aprox.)">
                                     <ValidationProvider name="numberFT" rules="required" v-slot="{ errors }" ref="numberFT" >
-                                        <b-input type="number" name="numberFT" v-model="editedPlace.persons_qtd"></b-input>
-                                        <span>{{ errors[0] }}</span>
+                                        <b-input type="number" name="numberFT" min="1" step="1" v-model="editedPlace.persons_qtd"></b-input>
+                                        <span style="color: red">{{ errors[0] && 'Campo obrigatório' }}</span>
                                     </ValidationProvider>
                                 </b-field>
                             </div>
@@ -40,7 +40,7 @@
                                 <b-field label="Logradouro">
                                     <ValidationProvider name="street" rules="required" v-slot="{ errors }">
                                         <b-input type="text" name="street" v-model="editedPlace.street" :disabled="isLoading" autocomplete="address-line1"></b-input>
-                                        <span>{{ errors[0] }}</span>
+                                        <span style="color: red">{{ errors[0] && 'Campo obrigatório' }}</span>
                                     </ValidationProvider>
                                 </b-field>
                             </div>
@@ -49,8 +49,8 @@
                             <div class="column">
                                 <b-field label="Número">
                                     <ValidationProvider name="number" rules="required" v-slot="{ errors }">
-                                        <b-input type="text" name="number" v-model="editedPlace.number" :disabled="isLoading"></b-input>
-                                        <span>{{ errors[0] }}</span>
+                                        <b-input type="number" name="number" min="1" step="1" v-model="editedPlace.number" :disabled="isLoading"></b-input>
+                                        <span style="color: red">{{ errors[0] && 'Campo obrigatório' }}</span>
                                     </ValidationProvider>
                                 </b-field>
                             </div>
@@ -65,7 +65,7 @@
                                 <b-field label="Cidade">
                                     <ValidationProvider name="city" rules="required" v-slot="{ errors }">
                                         <b-input type="text" name="city" v-model="editedPlace.city" :disabled="isLoading"></b-input>
-                                        <span>{{ errors[0] }}</span>
+                                        <span style="color: red">{{ errors[0] && 'Campo obrigatório' }}</span>
                                     </ValidationProvider>
                                 </b-field>
                             </div>
@@ -73,7 +73,7 @@
                                 <b-field label="Bairro">
                                     <ValidationProvider name="neighborhood" rules="required" v-slot="{ validate, errors }">
                                         <b-input type="text" name="neighborhood" v-model="editedPlace.neighborhood" :disabled="isLoading"></b-input>
-                                        <span>{{ errors[0] }}</span>
+                                        <span style="color: red">{{ errors[0] && 'Campo obrigatório' }}</span>
                                     </ValidationProvider>
                                 </b-field>
                             </div>
@@ -109,7 +109,7 @@
                                             <option value="SP">São Paulo</option>
                                             <option value="TO">Tocantins</option>
                                         </b-select>
-                                        <span>{{ errors[0] }}</span>
+                                        <span style="color: red">{{ errors[0] && 'Por Favor, selecione um Estado' }}</span>
                                     </ValidationProvider>
                                 </b-field>
                             </div>

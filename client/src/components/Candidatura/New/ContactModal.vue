@@ -17,7 +17,7 @@
                                         <option value="REP">Representante no Seminário de benchmarking</option>
                                         <option value="FOR">Fornecedor indicado</option>
                                     </b-select>
-                                    <span>{{ errors[0] }}</span>
+                                    <span style="color: red">{{ errors[0] }}</span>
                                 </ValidationProvider>
                             </b-field>
                         </div>
@@ -27,7 +27,7 @@
                             <b-field label="Nome">
                                 <ValidationProvider name="name" rules="required" v-slot="{ errors }">
                                     <b-input type="text" v-model="editContact.name" name="name"></b-input>
-                                    <span>{{ errors[0] }}</span>
+                                    <span style="color: red">{{ errors[0] }}</span>
                                 </ValidationProvider>
                             </b-field>
                         </div>
@@ -42,7 +42,7 @@
                             <b-field label="E-mail">
                                 <ValidationProvider name="email" rules="required|email" v-slot="{ errors }">
                                     <b-input type="email" v-model="editContact.email" name="email"></b-input>
-                                    <span>{{ errors[0] }}</span>
+                                    <span style="color: red">{{ errors[0] }}</span>
                                 </ValidationProvider>
                             </b-field>
                         </div>

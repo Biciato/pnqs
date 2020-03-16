@@ -1,7 +1,7 @@
 <template>
 	<section class="section">
-        <ValidationObserver v-slot="{ invalid }">
-            <form @submit.prevent="validate">
+        <ValidationObserver v-slot="{ handleSubmit }">
+            <form @submit.prevent="handleSubmit(validate)">
                 <div class="box">
                     <div class="columns">
                         <div class="column">
@@ -47,9 +47,6 @@
                                 </b-radio>
                                 <b-radio v-model="subscription.subscription_subcategory_id" native-value="3">
                                     <span class="is-size-7">Nivel II</span>
-                                </b-radio>
-                                <b-radio v-model="subscription.subscription_subcategory_id" native-value="4">
-                                    <span class="is-size-7">Nivel III</span>
                                 </b-radio>
                                 <b-radio v-model="subscription.subscription_subcategory_id" native-value="5">
                                     <span class="is-size-7">Nivel III (Troféus: Platina ou Diamante)</span>
@@ -160,7 +157,7 @@
                         </div>
                     </div>
                     <template v-if="subscription.subscription_category_id">
-                        <div class="columns" v-if="subscription.subscription_category_id == 4">
+                        <div class="columns" v-if="['3','4'].includes(subscription.subscription_category_id)">
                             <div class="column">
                                 <b-field label="Categoria por porte ou tipo especial sugerida">
                                     <b-select v-model="subscription.subscription_company_size_id">
@@ -183,7 +180,7 @@
                                 <b-field label="Razão Social do fornecedor indicado">
                                     <ValidationProvider name="indicate_company_name" rules="required" v-slot="{ errors }">
                                         <b-input name="indicate_company_name" v-model="subscription.indicate_company_name"></b-input>
-                                        <span>{{ errors[0] }}</span>
+                                        <span style="color: red">{{ errors[0] }}</span>
                                     </ValidationProvider>
                                 </b-field>
                             </div>
@@ -229,7 +226,7 @@
                                         <b-datepicker v-model="subscription.implantation_start_dt" placeholder="Selecione a data:" icon="calendar-today">
                                         </b-datepicker>
                                     </b-field>
-                                    <p class="help is-danger">Práticas implantadas há mais de três (3) anos não são elegíveis.</p>
+                                    <p class="help is-danger">Serão válidas as práticas implementadas a partir de 2017.</p>
                                 </div>
                             </div>
                             <div class="columns">
@@ -237,12 +234,15 @@
                                     <b-field label="Resumo da Prática">
                                         <ValidationProvider name="resume" rules="required" v-slot="{ errors }">
                                             <b-input v-model="subscription.practice_resume" name="resume" type="textarea"></b-input>
-                                            <span>{{ errors[0] }}</span>
+                                            <span style="color: red">{{ errors[0] }}</span>
                                         </ValidationProvider>
                                     </b-field>
                                     <p class="has-text-danger is-size-7">
                                         Não são elegíveis Trabalhos relativos a melhorias, ideias ou inovações em produtos, processos ou práticas operacionais,
                                         como por exemplo: softwares aplicativos, equipamentos, instrumentos, ferramentas, obras e outras soluções técnicas.
+                                    </p>
+                                    <p class="has-text-danger is-size-7">
+                                        <strong style="color: red">Ver outras condições de elegibilidade no Guia regulamento vigente.</strong>
                                     </p>
                                 </div>
                             </div>
@@ -270,7 +270,7 @@
                                     <b-field label="Resultados Alcançados">
                                         <ValidationProvider name="results" rules="required" v-slot="{ errors }">
                                             <b-input v-model="subscription.results" name="results" type="textarea"></b-input>
-                                            <span>{{ errors[0] }}</span>
+                                            <span style="color: red">{{ errors[0] }}</span>
                                         </ValidationProvider>
                                     </b-field>
                                     <p class="has-text-danger is-size-7">
@@ -288,7 +288,7 @@
                                     <b-field label="Denominação do Programa de aumento da Eficiência">
                                         <ValidationProvider name="practice_name" rules="required" v-slot="{ errors }">
                                             <b-input v-model="subscription.practice_name" name="practice_name"></b-input>
-                                            <span>{{ errors[0] }}</span>
+                                            <span style="color: red">{{ errors[0] }}</span>
                                         </ValidationProvider>
                                     </b-field>
                                 </div>
@@ -297,7 +297,7 @@
                                         <b-datepicker v-model="subscription.implantation_start_dt" placeholder="Selecione a data" icon="calendar-today">
                                         </b-datepicker>
                                     </b-field>
-                                    <p class="help is-danger">Práticas implantadas há mais de três (3) anos não são elegíveis.</p>
+                                    <p class="help is-danger">Serão válidas as práticas implementadas a partir de 2017.</p>
                                 </div>
                             </div>
                             <div class="columns">
@@ -305,11 +305,11 @@
                                     <b-field label="Resumo do Programa">
                                         <ValidationProvider name="resume" rules="required" v-slot="{ errors }">
                                             <b-input v-model="subscription.practice_resume" type="textarea" name="resume"></b-input>
-                                            <span>{{ errors[0] }}</span>
+                                            <span style="color: red">{{ errors[0] }}</span>
                                         </ValidationProvider>
                                     </b-field>
-                                    <p class="has-text-danger is-size-7">
-                                        Lembrete: Não são elegíveis Trabalhos relativos a softwares aplicativos, equipamentos, instrumentos, ferramentas, obras e outras soluções técnicas.
+                                    <p class="is-size-7">
+                                        <strong style="color: red">Ver outras condições de elegibilidade no Guia regulamento vigente.</strong>
                                     </p>
                                 </div>
                             </div>
@@ -357,53 +357,46 @@
                                     </section>
                                 </template>
                             </b-table>
-                            <br><br>
-                            <div class="columns">
-                                <div class="column">
-                                    <b-checkbox v-model="subscription.has_autonomy" native-value="1">
-                                        <strong>Declaração de autonomia da organização candidata:</strong>
-                                        <br>
-                                        Declaramos ter funções e estruturas administrativas próprias e autônomas,
-                                        no sentido de sermos responsáveis pelo planejamento das ações para atingir nossos objetivos,
-                                        cumprir nossa missão e atender nossos clientes. Possuímos clientes como pessoas físicas ou outras pessoas jurídicas,
-                                        consumidoras, usuárias ou compradoras regulares de nossos serviços/produtos no mercado que não são de nossa própria organização.
-                                    </b-checkbox>
-                                </div>
-                            </div>
-                            <div class="column">
-                                <b-checkbox v-model="subscription.agree_examiners" native-value="1">
-                                    Concordamos com a participação de empregados de empresas do setor como acompanhantes da banca de examinadores.
-                                </b-checkbox>
-                            </div>
                         </template>
-                        <template v-if="subscription.subscription_category_id == 4">
+                        <hr>
+                        <template v-if="['3','4'].includes(subscription.subscription_category_id)">
+                            <h4 style="display: inline-block; margin-bottom: 1em;">
+                                <strong>Declaração de concordância com o Regulamento, autonomia e ausência de restrição da organização candidata:</strong>
+                            </h4>
                             <div class="columns">
                                 <div class="column">
-                                    <b-checkbox v-model="subscription.agree_sqfsa" native-value="1">
-                                        <strong>Declaração de concordância com o Regulamento, autonomia e ausência de restrição da organização candidata:</strong>
-                                        <br>
-                                        Estamos cientes de que ao participar do SQFSA e submeter a candidatura de nossa organização concordamos com os
-                                        termos e condições do Regulamento do ciclo, em todas as suas etapas.
-                                    </b-checkbox>
+                                    <ValidationProvider rules="required" v-slot="{ errors }">
+                                        <b-checkbox v-model="subscription.agree_sqfsa" native-value="1">
+                                            Estamos cientes de que ao participar do PNQS e submeter a candidatura de nossa organização concordamos com os
+                                            termos e condições do Regulamento do ciclo, em todas as suas etapas.
+                                        </b-checkbox>
+                                        <span style="color: red">{{ errors[0] && 'É preciso aceitar essa declaração' }}</span>
+                                    </ValidationProvider>
                                 </div>
                             </div>
                             <div class="columns">
                                 <div class="column">
-                                    <b-checkbox v-model="subscription.has_autonomy" native-value="1">
-                                        Declaramos ter funções e estruturas administrativas próprias e autônomas, no sentido de sermos responsáveis pelo
-                                        planejamento das ações para atingir nossos objetivos, cumprir nossa missão e atender nossos clientes. Possuímos clientes
-                                        como pessoas físicas ou outras pessoas jurídicas, consumidoras, usuárias ou compradoras regulares de nossos
-                                        serviços/produtos no mercado que não são de nossa própria organização.
-                                    </b-checkbox>
+                                    <ValidationProvider rules="required" v-slot="{ errors }">
+                                        <b-checkbox v-model="subscription.has_autonomy" native-value="1">
+                                            Declaramos ter funções e estruturas administrativas próprias e autônomas, no sentido de sermos responsáveis pelo
+                                            planejamento das ações para atingir nossos objetivos, cumprir nossa missão e atender nossos clientes. Possuímos clientes
+                                            como pessoas físicas ou outras pessoas jurídicas, consumidoras, usuárias ou compradoras regulares de nossos
+                                            serviços/produtos no mercado que não são de nossa própria organização.
+                                        </b-checkbox>
+                                        <span style="color: red">{{ errors[0] && 'É preciso aceitar essa declaração' }}</span>
+                                    </ValidationProvider>
                                 </div>
                             </div>
                             <div class="columns">
                                 <div class="column">
-                                    <b-checkbox v-model="subscription.has_restriction" native-value="0">
-                                        Declaramos neste ano e no ano anterior, não temos restrição de atuação transitada em julgado de qualquer natureza junto
-                                        aos órgãos de defesa do consumidor e/ou perante as instituições ou agências públicas federais, estaduais e municipais em
-                                        qualquer um dos três poderes.
-                                    </b-checkbox>
+                                    <ValidationProvider rules="required" v-slot="{ errors }">
+                                        <b-checkbox v-model="subscription.has_restriction" native-value="0">
+                                            Declaramos neste ano e no ano anterior, não temos restrição de atuação transitada em julgado de qualquer natureza junto
+                                            aos órgãos de defesa do consumidor e/ou perante as instituições ou agências públicas federais, estaduais e municipais em
+                                            qualquer um dos três poderes.
+                                        </b-checkbox>
+                                        <span style="color: red">{{ errors[0] && 'É preciso aceitar essa declaração' }}</span>
+                                    </ValidationProvider>
                                 </div>
                             </div>
                             <div class="columns">
@@ -417,7 +410,7 @@
                             </div>
                         </template>
                         <br><br>
-                        <button class="button is-primary" :class="{'is-loading': isLoading}" :disabled="invalid">Enviar Candidatura</button>
+                        <button class="button is-primary" :class="{'is-loading': isLoading}">Enviar Candidatura</button>
                     </template>
                 </div>
             </form>
