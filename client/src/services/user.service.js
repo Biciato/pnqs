@@ -80,9 +80,22 @@ const UserService = {
         TokenService.removeToken()
         TokenService.removeRefreshToken()
         ApiService.removeHeader()
-        
-        // NOTE: Again, we'll cover the 401 Interceptor a bit later. 
-        ApiService.unmount401Interceptor()
+    },
+
+    signup: async function(data) {
+        const requestData = {
+            method: 'post',
+            url: "/auth/signup",
+            data: { ...data }
+        }
+
+        try {
+            const response = await ApiService.customRequest(requestData)
+
+            return response.data
+        } catch (error) {
+            throw new AuthenticationError(error.response.status, error.response.data.message)
+        }
     },
 
     changePassword: async function(params) {

@@ -47,7 +47,7 @@ const SubscriptionService = {
             
             ApiService.mount401Interceptor();
 
-            return response.data
+            return response.data.result
         } catch (error) {
             throw new AuthenticationError(error.response.status, error.response.data.detail)
         }
@@ -65,8 +65,21 @@ const SubscriptionService = {
         try {
             const response = await ApiService.customRequest(requestData)
             
-            ApiService.mount401Interceptor();
+            return response.data
+        } catch (error) {
+            throw new AuthenticationError(error.response.status, error.response.data.detail)
+        }
+    },
+    delete: async function(id) {
+        const requestData = {
+            method: 'delete',
+            url: `/subscription/${id}`,
+            headers: { 'X-Token': TokenService.getToken() }
+        }
 
+        try {
+            const response = await ApiService.customRequest(requestData)
+            
             return response.data
         } catch (error) {
             throw new AuthenticationError(error.response.status, error.response.data.detail)

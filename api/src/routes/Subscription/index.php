@@ -133,4 +133,10 @@ $app->delete("/subscription/[{subscriptionId}]", function ($request, $response, 
   return $response->withJson(["message" => "Removido com sucesso"], 200);
 })->add($auth_middleware);
 
+$app->get('/email', function () {
+  $emailsSender = new Emails();
+  $resp = $emailsSender->approved_email('Teste', 'USername', 10);
+  return $reps;
+});
+
 ?>

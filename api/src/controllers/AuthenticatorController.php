@@ -37,9 +37,8 @@ class AuthenticatorController
       $user->save();
       return $user;
     } catch (Exception $e) {
-      return array("status" => "error", "message" => $e);
+      return array("status" => "error", "message" => 'Não foi possivel realizar o cadastro');
     }
-    return array("status" => "error", "message" => "Não foi possivel realizar o cadastro");
   }
 
   public function rememberPassword($params){

@@ -607,7 +607,7 @@
 <script>
 
 import moment from 'moment'
-import SubscriptionService from '../../services/subscription.service'
+import store from '../../store/index'
 import axios from 'axios'
 
 export default {
@@ -691,11 +691,11 @@ export default {
 	},
 	methods: {
 		getData(){
-            SubscriptionService.show(this.$route.params.id).then((res) => {
+            store.dispatch('subscription/show', this.$route.params.id).then(() => {
 				this.subscription = {
-					...res.result,
-					economic_activity_start: new Date(res.result["economic_activity_start"]),
-					implantation_start_dt: new Date(res.result["implantation_start_dt"])
+					...store.getters['subscription/get'],
+					economic_activity_start: new Date(store.getters['subscription/get']["economic_activity_start"]),
+					implantation_start_dt: new Date(store.getters['subscription/get']["implantation_start_dt"])
 				}
 				delete this.subscription["user"]
 				delete this.subscription["companysize"]
@@ -705,7 +705,7 @@ export default {
 				delete this.subscription["subgroup"]
 				this.getContacts()
 				this.getPlaces()
-				this.subscription.agree_examiners = this.$R.toString(this.$R.or(res.result.agree_examiners, []))
+				this.subscription.agree_examiners = this.$R.toString(this.$R.or(store.getters['subscription/get'].agree_examiners, []))
 			})
 		},
 		getContacts(){
@@ -722,37 +722,6 @@ export default {
 		},
 		getPlaces(){
 			this.tablePlaces = this.subscription.places
-		},
-		save(){
-			this.$validator.validateAll().then((isValid) => {
-				if (isValid) {
-					this.isLoading = true
-					if (this.subscription.status == 'DEV') {
-						this.subscription.status = "ANL"
-					}
-					SubscriptionService.update(this.subscription).then(() => {
-						this.isLoading = false
-						this.$toast.open({
-							message: 'Pedido atualizado com sucesso!',
-							type: 'is-success'
-						})
-						this.$router.push("/candidaturas")
-					}).catch((error) => {
-						this.isLoading = false
-						alert(error.data.message)
-						this.getData()
-					})
-				}
-			})
-		},
-		addPractice(practice){
-			this.subscription.practices.push(practice)
-		},
-		removePractice(practice){
-			var indexOf = this.subscription.practices.indexOf(practice)
-			if (indexOf >= 0) {
-				this.subscription.practices.splice(indexOf, 1)
-			}
 		},
 		formatDateToInput(date){
 			return moment(Date.parse(date)).format('DD/MM/YYYY')

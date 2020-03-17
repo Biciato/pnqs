@@ -2,6 +2,7 @@
 
 use PHPMailer\PHPMailer\PHPMailer;
 use PHPMailer\PHPMailer\Exception;
+use PHPMailer\PHPMailer\SMTP;
 
 class Emails {
 
@@ -69,11 +70,13 @@ class Emails {
     $mail->SMTPAuth = true;
 
     // Enable TLS encryption over port 587
-    $mail->SMTPSecure = 'ssl';
+    $mail->SMTPSecure = 'tls';
     $mail->Port = 465;
 
     // Tells PHPMailer to send HTML-formatted email
     $mail->isHTML(true);
+
+    $mail->SMTPDebug = SMTP::DEBUG_SERVER;
 
     if(!$mail->send()) {
       echo "Email not sent. " , $mail->ErrorInfo , PHP_EOL;

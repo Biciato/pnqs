@@ -13,6 +13,10 @@
 							<b-field label="E-mail">
 								<b-input type="text" v-model="user.username" :class="{'is-loading': isLoading}" :disabled="isLoading"></b-input>
 							</b-field>
+							<b-field label="CNPJ">
+								<b-input type="text" v-model="user.cnpj" :class="{'is-loading': isLoading}" :disabled="isLoading" 
+									v-mask="'##.###.###/####-##'" maxlength="18"></b-input>
+							</b-field>
 							<b-field label="Senha">
 								<b-input type="password" v-model="user.password" :class="{'is-loading': isLoading}" :disabled="isLoading"></b-input>
 							</b-field>
@@ -39,8 +43,8 @@
 	</section>
 </template>
 <script>
+import UserService from '../../services/user.service'
 export default {
-	props: ['auth', 'authenticated'],
 	data() {
 		return {
 			user: {},
@@ -57,17 +61,27 @@ export default {
 	},
 	methods: {
 		signup(){
-			this.isLoading = true
-			this.auth.signup(this, this.user).then(() => {
-				this.isLoading = false
-				this.$toast.open({
-					message: 'Cadastrado com sucesso!',
-					type: 'is-success'
+			this.errors = []
+			if (Object.keys(this.user).some(key => this.user[key] === '')) {
+				this.errors.push('Por favor, preencha todos os dados')
+			} else if (this.user.cnpj.length < 18) { 
+				this.errors.push('CNPJ inválido')
+			} else if (!this.user.username.match(/^(([^<>()[\]\\.,;:\s@"]+(\.[^<>()[\]\\.,;:\s@"]+)*)|(".+"))@((\[[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\.[0-9]{1,3}\])|(([a-zA-Z\-0-9]+\.)+[a-zA-Z]{2,}))$/)) {
+				this.errors.push('Formato de e-mail inválido')
+			} else {
+				this.isLoading = true
+				UserService.signup(this.user).then(() => {
+					this.isLoading = false
+					this.$buefy.toast.open({
+						message: 'Usuário cadastrado com sucesso!',
+						type: 'is-success'
+					})
+					this.$router.push({path: "/login", params: {completed: true}})
+				}).catch((errors) => {
+					this.errors.push(errors.message)
+					this.isLoading = false
 				})
-			}).catch((errors) => {
-				this.errors.push(errors.message)
-				this.isLoading = false
-			})
+			}
 		},
 		back(){
 			this.$router.push("/login")

@@ -37,7 +37,7 @@
 						</b-table-column>
 						<b-table-column width="200" :field="''" :label="''">
 							<button type="button" class="button is-small is-primary" @click="view(props.row.id)">Ver Candidatura</button>
-							<button type="button" class="button is-small" :disabled="props.row.status != 'ANL'" @click='remove(props.row.id)'>Excluir</button>
+							<button type="button" class="button is-small" :disabled="props.row.status != 'ANL'" @click='confirm(props.row.id)'>Excluir</button>
 						</b-table-column>
 						</template>
 					<template slot="empty">
@@ -97,20 +97,33 @@ export default {
 				}
 			})
 		},
-		remove(id){
-			if (confirm("Tem certeza que deseja excluir essa candidatura?")) {
-				SubscriptionService.remove(id).then(() => {
-					this.isLoading = false
-					this.$toast.open({
-						message: 'Pedido removido com sucesso!',
+		confirm(id){
+			this.$buefy.dialog.confirm({
+				title: 'Aviso',
+				message: 'Tem certeza que deseja <b>remover</b> essa candidatura?',
+				confirmText: 'Remover',
+				type: 'is-danger',
+				hasIcon: true,
+				onConfirm: () => this.delete(id)
+			})
+		},
+		delete(id) {
+			this.isLoading = true
+			SubscriptionService
+				.delete(id)
+				.then(() => {
+					this.$buefy.toast.open({
+						message: 'Candidatura Removida com Sucesso!',
 						type: 'is-success'
 					})
 					this.load()
-				}).catch((error) => {
+				}).catch(() => {
+					this.$buefy.dialog.alert({
+						title: 'Erro',
+						message: 'Ocorreu um erro no sistema. Favor tentar mais tarde ou contactar o administrador.'
+					})
 					this.isLoading = false
-					alert(error)
 				})
-			}
 		},
 		view(id){
 			this.$router.push(`/visualizar-candidatura/${id}`);
