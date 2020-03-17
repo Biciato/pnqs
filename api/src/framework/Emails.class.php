@@ -40,7 +40,7 @@ class Emails {
 
     // Replace sender@example.com with your "From" address.
     // This address must be verified with Amazon SES.
-    $mail->setFrom('pnqs@abes.locaweb.com.br');
+    $mail->setFrom('desenvolvimento@pnqs.com.br');
 
     // Replace recipient@example.com with a "To" address. If your account
     // is still in the sandbox, this address must be verified.
@@ -49,7 +49,7 @@ class Emails {
     $mail->addAddress($to);
 
     // Replace smtp_username with your Amazon SES SMTP user name.
-    $mail->Username = 'pnqs@abes.locaweb.com.br';
+    $mail->Username = 'desenvolvimento@pnqs.com.br';
     $mail->addCC('cnqa@abes-dn.org.br');
 
     // Replace smtp_password with your Amazon SES SMTP password.
@@ -71,7 +71,7 @@ class Emails {
 
     // Enable TLS encryption over port 587
     $mail->SMTPSecure = 'tls';
-    $mail->Port = 465;
+    $mail->Port = 587;
 
     // Tells PHPMailer to send HTML-formatted email
     $mail->isHTML(true);
