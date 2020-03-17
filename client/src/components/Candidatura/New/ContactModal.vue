@@ -11,11 +11,11 @@
                             <b-field label="Categoria do Contato">
                                 <ValidationProvider name="categoria" rules="required" v-slot="{ errors }">
                                     <b-select v-model="editContact.type" name="categoria">
-                                        <option value="DIR">Principal dirigente</option>
-                                        <option value="RES">Responsável Candidatura</option>
-                                        <option value="APR">Apresentador do Case  no Seminário de benchmarking</option>
-                                        <option value="REP">Representante no Seminário de benchmarking</option>
-                                        <option value="FOR">Fornecedor indicado</option>
+                                        <option :value="category.key" 
+                                                v-for="category in uniques()" 
+                                                v-bind:key="category.id">
+                                                {{ category.val }}
+                                        </option>
                                     </b-select>
                                     <span style="color: red">{{ errors[0] }}</span>
                                 </ValidationProvider>
@@ -72,7 +72,14 @@ export default {
                 phone: '',
                 email: '',
                 name: ''
-			}
+			},
+            categories: [
+                { key: "DIR", val: 'Principal dirigente' },  
+                { key: "RES", val: 'Responsável Candidatura' },
+                { key: "APR", val: 'Apresentador do Case  no Seminário de benchmarking' },
+                { key: "REP", val: 'Representante no Seminário de benchmarking' },
+                { key: "FOR", val: 'Fornecedor indicado' }
+            ]
 		}
 	},
 	created(){
@@ -84,7 +91,12 @@ export default {
 		saveContact(){
             this.$emit('added-contact', this.editContact)
             this.$parent.close()
-		}
+        },
+        uniques() {
+            return this.categories.filter(cat => 
+                !this.subscription.subscription_contacts.some(contact => contact.type === cat.key)
+            )
+        }
 	}
 }
 </script>

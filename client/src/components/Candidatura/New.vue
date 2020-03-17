@@ -503,14 +503,14 @@ export default {
 
             store.dispatch('subscription/store', store.getters['subscription/get']).then(() => {
                 this.isLoading = false
-                this.$toast.open({
+                this.$buefy.toast.open({
                     message: 'Pedido enviado com sucesso!',
                     type: 'is-success'
                 })
                 this.$router.push({path: "/candidaturas", params: {completed: true}})
             }).catch((error) => {
                 this.isLoading = false
-                alert(error.data.message)
+                alert(error)
                 this.subscription.contacts = []
                 this.subscription.places = []
             })

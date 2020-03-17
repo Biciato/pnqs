@@ -54,7 +54,7 @@ export default {
 		}
 	},
 	computed: {
-		loggedIn() { console.log(this.image); return store.getters['auth/loggedIn'] }
+		loggedIn() { return store.getters['auth/loggedIn'] }
 	},
 	methods: {
 		logout(){
