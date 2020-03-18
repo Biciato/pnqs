@@ -102,5 +102,16 @@ class AuthenticatorController
       return array("status" => "error", "message" => "Usuário não encontrado");
     return $user;
   }
+
+  public function update($params) {
+    $user = UserModel::where('username', '=', $params['username'])->first();
+    if ($user) {
+      $user->cnpj = $params['cnpj'];
+      $user->save();
+      return array("status" => "success", "message" => "Dados atualizados com sucesso");
+    } else {
+      return array("status" => "error", "message" => "Usuário não encontrado"); 
+    }    
+  }
 }
 ?>

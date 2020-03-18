@@ -12,6 +12,7 @@ import Maintenance from '../components/Maintenance'
 import Login from '../components/Auth/Login'
 import Signup from '../components/Auth/Signup'
 import RememberPassword from '../components/Auth/RememberPassword'
+import Update from '../components/Auth/Update'
 
 // Candidaturas Pages
 import NewCandidatura from '../components/Candidatura/New.vue';
@@ -36,6 +37,14 @@ const router =  new Router({
 	{
 		path: "/signup",
 		component: Signup,
+    meta: {
+      public: true,  
+      onlyWhenLoggedOut: true
+    }
+  },
+  {
+		path: "/update",
+		component: Update,
     meta: {
       public: true,  
       onlyWhenLoggedOut: true

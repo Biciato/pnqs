@@ -28,13 +28,13 @@
 							</b-field>
 							<span style="color: red" v-if="[undefined, ''].includes(remember.cnpj) && validated">CNPJ é necessário</span>
 							<span style="color: red" v-if="remember.cnpj && remember.cnpj.length < 18 && validated">CNPJ inválido</span>
+							<p class="control is-size-7 has-text-grey">Se não possui CNPJ, cadastre um <a @click="handleCnpjClick()">aqui</a>.</p>
 						</div>						
 					</div>
 					<div class="columns">
 						<div class="column">
 							<b-field label="Nova senha">
 								<b-input type="password" name="password" v-model="remember.password" :disabled="isLoading"></b-input>
-								
 							</b-field>
 							<span style="color: red" v-if="[undefined, ''].includes(remember.password) && validated">Senha é necessário</span>
 						</div>						
@@ -88,6 +88,9 @@ export default {
 					this.isLoading = false
 				})
 			}
+		},
+		handleCnpjClick() {
+			this.$emit('cnpj-clicked')
 		},
 		validate() {
 			return ['cnpj', 'password', 'email'].some(item => !this.remember[item] || (this.remember[item] === ''))

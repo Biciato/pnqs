@@ -42,4 +42,13 @@ $app->post("/auth/change-password", function ($request, $response, $args) {
   return $response->withJson($result, 200);
 });
 
+$app->post('/auth/update', function ($request, $response, $args) {
+  $params = $request->getParsedBody();
+  $auth_control = new AuthenticatorController;
+  $result = $auth_control->update($params);
+  if ($result["status"] == "error")
+    return $response->withJson(["message" => $result["message"]], 400);
+  return $response->withJson($result, 200);
+});
+
 ?>

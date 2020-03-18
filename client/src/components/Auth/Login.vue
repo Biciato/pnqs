@@ -34,7 +34,7 @@
 			</div>
 		</div>
 		<b-modal :active.sync="isRememberPassModalActive" :canCancel="true" has-modal-card>
-			<lost-password></lost-password>
+			<lost-password @cnpj-clicked="onCnpjClick"></lost-password>
 		</b-modal>
 	</section>
 </template>
@@ -70,6 +70,9 @@ export default {
 					this.isLoading = false
 				}
 			})
+		},
+		onCnpjClick() {
+			this.$router.push("/update")
 		}
 	}
 }

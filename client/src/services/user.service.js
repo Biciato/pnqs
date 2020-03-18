@@ -114,6 +114,22 @@ const UserService = {
         } catch (error) {
             throw new AuthenticationError(error.response.status, error.response.data.message)
         }
+    },
+    update: async function(params) {
+        const requestData = {
+            method: 'post',
+            url: '/auth/update',
+            data: params
+        }
+
+        try {
+            const response = await ApiService.customRequest(requestData)
+
+            return response
+        } catch (error) {
+            console.table(error)
+            throw new AuthenticationError(error.response.status, error.response.data.message)
+        }
     }
 }
 
