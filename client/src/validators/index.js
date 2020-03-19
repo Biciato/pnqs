@@ -24,7 +24,7 @@ extend('required', {
 extend('email', {
 	validate(value) {
 		return {
-			valid: value.match(/^\w+([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/)
+			valid: value.match(/^\w+\.([-]?\w+)*@\w+([-]?\w+)*(\.\w{2,3})+$/)
 		};
 	},
 	message: 'E-mail inválido',

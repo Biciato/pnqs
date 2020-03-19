@@ -21,8 +21,8 @@ const SubscriptionService = {
     index: async function() {
         const requestData = {
             method: 'get',
-            url: "/subscriptions",
-            headers: { 'Authorization': `Bearer ${store.getters['auth/accessToken']}` }
+            url: "/subscription/",
+            headers: { 'X-Token': store.getters['auth/accessToken'] }
         }
 
         try {

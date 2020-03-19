@@ -49,7 +49,7 @@
                                         <span style="color: red">{{ errors[0] }}</span>
                                     </ValidationProvider>
                                 </b-field>
-                                <p class="help is-danger">Serão válidos os Programas implementados a partir de 2017.</p>
+                                <p class="help is-danger">Serão válidas as práticas implementadas a partir de 2017.</p>
                             </div>
                             <div class="column">
                                 <b-field label="Data de início da implantação">

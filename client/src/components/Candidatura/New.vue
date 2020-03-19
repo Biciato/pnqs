@@ -253,7 +253,7 @@
                                     </b-field>
                                 </div>
                                 <div class="column">
-                                    <b-field label="Questões dos Critérios categoria AMEGSA Nível IV com os quais a prática tem mais relação: (Ex.: 2.d, 3.1b e 8.2a)">
+                                    <b-field label="Questões dos Critérios categoria AMEGSA Nível III com os quais a prática tem mais relação: (Ex.: 2.a, 3.1d e 8.2a)">
                                         <b-input v-model="subscription.criteria_questions"></b-input>
                                     </b-field>
                                 </div>
@@ -297,7 +297,7 @@
                                         <b-datepicker v-model="subscription.implantation_start_dt" placeholder="Selecione a data" icon="calendar-today">
                                         </b-datepicker>
                                     </b-field>
-                                    <p class="help is-danger">Serão válidas as práticas implementadas a partir de 2017.</p>
+                                    <p class="help is-danger">Será válido o programa implementado a partir de 2017.</p>
                                 </div>
                             </div>
                             <div class="columns">

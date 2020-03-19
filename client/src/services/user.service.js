@@ -10,9 +10,13 @@ const UserService = {
      * @throws AuthenticationError 
     **/
     login: async function(email, password) {
+        const token = window.btoa(`${email}:${password}`)
         const requestData = {
             method: 'post',
             url: "/auth/login",
+            headers: {
+                'X-FID-Authorization': `Basic ${token}`
+            },
             data: {
                 username: email,
                 password
