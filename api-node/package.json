@@ -1,0 +1,33 @@
+{
+  "name": "pnqs_api",
+  "version": "1.0.0",
+  "description": "Pnqs Rest Api",
+  "main": "index.js",
+  "scripts": {
+    "test": "echo \"Error: no test specified\" && exit 1",
+    "build": "rimraf dist/ && babel ./ --out-dir / --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --unsafe-perm=true --allow-root --copy-files",
+    "start": "NODE_ENV=development nodemon src/index.js --exec babel-node --presets babel-preset-env"
+  },
+  "author": "Leandro Biciato",
+  "license": "ISC",
+  "dependencies": {
+    "bcrypt": "^4.0.1",
+    "body-parser": "^1.19.0",
+    "cors": "^2.8.5",
+    "cross-env": "^7.0.2",
+    "crypto-js": "^4.0.0",
+    "dotenv": "^8.2.0",
+    "express": "^4.17.1",
+    "helmet": "^3.21.3",
+    "jsonwebtoken": "^8.5.1",
+    "mongoose": "^5.9.5",
+    "morgan": "^1.9.1",
+    "nodemon": "^2.0.2"
+  },
+  "devDependencies": {
+    "babel-cli": "^6.26.0",
+    "babel-preset-env": "^1.7.0",
+    "babel-preset-es2015": "^6.24.1",
+    "rimraf": "^3.0.2"
+  }
+}
