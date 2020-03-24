@@ -124,7 +124,7 @@
                     ></b-input>
                 </b-field>
                 <p class="help is-danger">
-                    No caso de unidade autônoma, informar o percentual da força de trabalho da candidata em relação à
+                    No caso de unidade autônoma ou áreas de apoio, informar o percentual da força de trabalho da candidata em relação à
                     organização controladora, incluindo no cálculo os terceiros que estejam sob a coordenação da
                     candidata.
                 </p>

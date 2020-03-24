@@ -17,28 +17,13 @@
                         </div>
                     </div>
                     <template v-if="practice.practice_category == 'IGS'">
-                        <h1 class="title is-6">Aplicável para categoria IGS</h1>
+                        <h1 class="title is-6">Tema</h1>
                         <div class="block">
                             <b-radio v-model="practice.subgroup_id" native-value="3">
-                                Água
+                                Transformação Digital
                             </b-radio>
                             <b-radio v-model="practice.subgroup_id" native-value="4">
-                                Esgoto e Efluentes Industriais
-                            </b-radio>
-                            <b-radio v-model="practice.subgroup_id" native-value="5">
-                                Manejo de Águas Pluviais
-                            </b-radio>
-                            <b-radio v-model="practice.subgroup_id" native-value="6">
-                                Resíduos Sólidos
-                            </b-radio>
-                            <b-radio v-model="practice.subgroup_id" native-value="7">
-                                Clientes
-                            </b-radio>
-                            <b-radio v-model="practice.subgroup_id" native-value="8">
-                                Apoio
-                            </b-radio>
-                            <b-radio v-model="practice.subgroup_id" native-value="9">
-                                Sócioambiental
+                                Gestão Avançada
                             </b-radio>
                         </div>
                         <div class="columns">
@@ -49,7 +34,6 @@
                                         <span style="color: red">{{ errors[0] }}</span>
                                     </ValidationProvider>
                                 </b-field>
-                                <p class="help is-danger">Serão válidas as práticas implementadas a partir de 2017.</p>
                             </div>
                             <div class="column">
                                 <b-field label="Data de início da implantação">
@@ -58,6 +42,7 @@
                                         </b-datepicker>
                                         <span style="color: red">{{ errors[0] }}</span>
                                     </ValidationProvider>
+                                    <p class="help is-danger">Serão válidas as práticas implementadas a partir de 2017.</p>
                                 </b-field>
                             </div>
                         </div>
@@ -85,7 +70,7 @@
                                 </b-field>
                             </div>
                             <div class="column">
-                                <b-field label="Questões dos Critérios categoria AMEGSA Nível IV com os quais a prática tem mais relação: (Ex.: 2.d, 3.1b e 8.2a)">
+                                <b-field label="Questões dos Critérios categoria AMEGSA Nível III com os quais a prática tem mais relação: (Ex.: 2.d, 3.1b e 8.2a)">
                                     <ValidationProvider name="criteria_questions" rules="required" v-slot="{ errors }">
                                         <b-input v-model="practice.criteria_questions" name="criteria_questions"></b-input>
                                         <span style="color: red">{{ errors[0] }}</span>
@@ -120,7 +105,15 @@
                         </div>
                     </template>
                     <template v-if="practice.practice_category == 'PEOS'">
-                        <h1 class="title is-6">Aplicável para categoria PEOS</h1>
+                        <h1 class="title is-6">Tema</h1>
+                        <div class="block">
+                            <b-radio v-model="practice.subgroup_id" native-value="3">
+                                Gestão de Perdas
+                            </b-radio>
+                            <b-radio v-model="practice.subgroup_id" native-value="4">
+                                Gestão de Eficiência Energética
+                            </b-radio>
+                        </div>
                         <div class="columns">
                             <div class="column">
                                 <b-field label="Denominação do Programa de aumento da Eficiência">
@@ -129,7 +122,6 @@
                                         <span style="color: red">{{ errors[0] }}</span>
                                     </ValidationProvider>
                                 </b-field>
-                                <p class="help is-danger">Práticas implantadas há mais de cinco anos não são elegíveis.</p>
                             </div>
                             <div class="column">
                                 <b-field label="Data de implantação">
@@ -138,6 +130,7 @@
                                         </b-datepicker>
                                         <span style="color: red">{{ errors[0] }}</span>
                                     </ValidationProvider>
+                                    <p class="help is-danger">Serão válidas os Programas implementados a partir de 2017.</p>
                                 </b-field>
                             </div>
                         </div>
