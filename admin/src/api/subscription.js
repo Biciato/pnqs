@@ -42,9 +42,18 @@ const get_all = (filters) => {
 	})
 }
 
+const remove = (id) => {
+	return new Promise((resolve, reject) =>
+		Vue.http.delete(`subscription/${id}`)
+			.then(result => resolve(result))
+			.catch(error => reject(error))
+	)
+}
+
 export default{
 	save,
 	update,
 	get,
-	get_all
+	get_all,
+	remove
 }

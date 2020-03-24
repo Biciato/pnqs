@@ -1,7 +1,19 @@
-import mongoose from "mongoose";
+import mongoose from "mongoose"
+import {MongooseAutoIncrementID} from 'mongoose-auto-increment-reworked'
 
 // Subscription Columns
 const subscriptionSchema = new mongoose.Schema({
+    _id: Number,
+    user_id: {
+        type: String,
+        required: true
+    },
+    tema_igs: {
+        type: String
+    },
+    tema_peos: {
+        type: String
+    },
     organization_name: {
         type: String,
         required: true,
@@ -36,10 +48,12 @@ const subscriptionSchema = new mongoose.Schema({
         trim: true,
     },
     is_autonomous: {
-        type: Boolean
+        type: Boolean,
+        default: false
     },
     is_public: {
         type: Boolean,
+        default: false
     },
     persons_qt: {
         type: Number
@@ -51,7 +65,8 @@ const subscriptionSchema = new mongoose.Schema({
         type: Number
     },
     status: {
-        type: Boolean
+        type: String,
+        default: 'ANL'
     },
     status_reason: {
         type: String
@@ -102,7 +117,8 @@ const subscriptionSchema = new mongoose.Schema({
         type: Boolean
     },
     removed: {
-        type: Boolean
+        type: Boolean,
+        default: false
     },
     persons_perc: {
         type: String
@@ -118,14 +134,30 @@ const subscriptionSchema = new mongoose.Schema({
         type: String
     },
     reviewer_id: {
-        type: Boolean
+        type: Number,
+        default: 7
     },
     year: {
         type: Date
     },
     active: {
-        type: Boolean
+        type: Boolean,
+        default: true
     },
+    created_at: {
+        type: Date,
+        default: Date.now
+    },
+    updated_at: {
+        type: Date,
+        default: Date.now
+    }
 })
+ 
+/*
+ * Alternatively, just use schema.plugin(). The options passed MUST contain the "modelName" key and, optionally,
+ * any of the parameters from the configuration section below.
+ */
+subscriptionSchema.plugin(MongooseAutoIncrementID.plugin, {modelName: 'Subscription'})
 
-export default mongoose.model("Subscription", subscriptionSchema);
+export default mongoose.model("Subscription", subscriptionSchema)

@@ -1,5 +1,4 @@
 import ApiService from './api.service'
-import { TokenService } from './storage.service'
 import store from '../store/index'
 
 class AuthenticationError extends Error {
@@ -21,8 +20,10 @@ const SubscriptionService = {
     index: async function() {
         const requestData = {
             method: 'get',
-            url: "/subscription/",
-            headers: { 'X-Token': store.getters['auth/accessToken'] }
+            url: "/subscriptions/",
+            // url: "/subscription/",
+            // headers: { 'X-Token': store.getters['auth/accessToken'] }
+            headers: { 'Authorization': `Bearer ${store.getters['auth/accessToken']}` }
         }
 
         try {
@@ -39,14 +40,13 @@ const SubscriptionService = {
         const requestData = {
             method: 'get',
             url: `/subscription/${id}`,
-            headers: { 'X-Token': TokenService.getToken() }
+            headers: { 'Authorization': `Bearer ${store.getters['auth/accessToken']}` }
+            // headers: { 'X-Token': store.getters['auth/accessToken'] }
         }
 
         try {
             const response = await ApiService.customRequest(requestData)
-            
             ApiService.mount401Interceptor();
-
             return response.data.result
         } catch (error) {
             throw new AuthenticationError(error.response.status, error.response.data.detail)
@@ -56,7 +56,8 @@ const SubscriptionService = {
         const requestData = {
             method: 'post',
             url: `/subscription/`,
-            headers: { 'X-Token': TokenService.getToken() },
+            headers: { 'Authorization': `Bearer ${store.getters['auth/accessToken']}` },
+            // headers: { 'X-Token': store.getters['auth/accessToken'] },
             data: {
                 ...subscription
             }
@@ -74,7 +75,8 @@ const SubscriptionService = {
         const requestData = {
             method: 'delete',
             url: `/subscription/${id}`,
-            headers: { 'X-Token': TokenService.getToken() }
+            headers: { 'Authorization': `Bearer ${store.getters['auth/accessToken']}` }
+            // headers: { 'X-Token': store.getters['auth/accessToken'] }
         }
 
         try {

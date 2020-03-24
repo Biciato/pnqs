@@ -1,6 +1,6 @@
 <template>
 	<section class="section">
-        <ValidationObserver v-slot="{ handleSubmit }">
+        <ValidationObserver v-slot="{ handleSubmit }" v-if="!showAfterRegister">
             <form @submit.prevent="handleSubmit(validate)">
                 <div class="box">
                     <div class="columns">
@@ -55,17 +55,9 @@
                                     <span class="is-size-7">Nivel III+ (Troféus: Rubi, Duplo Rubi ou Turmalina Paraíba) </span>
                                 </b-radio>
                                 <p class="control is-size-7 has-text-grey">
-                                    Nota: Candidatas Nível III e IV/IV Plus devem candidatar, respectivamente e no mínimo, um e dois trabalhos, 
-                                    na categoria IGS ou PEOS
-                                </p>
-                                <p class="control is-size-7 has-text-grey">
-                                 Nota 1: Candidatas aos Níveis II, III e III+ consulte o Regulamento sobre a necessidade de lançamento 
-                                 de candidatura concomitante de um ou dois trabalhos de IGS ou PEOS, respectivamente;   
-                                </p>
-                                <p class="control is-size-7 has-text-grey">
-                                    Nota 2: Para categoria AMEGSA consulte o Regulamento para ver restrições ao Nível B, Nível mínimo possível cf. 
+                                    Para categoria AMEGSA consulte o Regulamento para ver restrições ao Nível B, Nível mínimo possível cf. 
                                     reconhecimento anterior, Nível mínimo possível para Unidades Autônomas, porte mínimo obrigatório para Unidades 
-                                    Autônomas e de Apoio ao Nível III, candidaturas concomitantes obrigatórias IGS e PEOS se escolher Níveis II ou III, 
+                                    Autônomas e de Apoio ao Nível III e III+, candidaturas concomitantes obrigatórias IGS e PEOS se escolher Níveis II, III ou III+, 
                                     limites de candidaturas por controladora ou grupo empresarial.   
                                 </p>
                                 <p v-if="subscription.subscription_subcategory_id == 3" class="help is-danger">No Nível II a candidata AMEGSA deve apresentar candidatura concomitante de, no mínimo, um Case na categoria IGS ou PEOS.</p>
@@ -418,6 +410,11 @@
 		<b-modal :active.sync="isPraticasModalActive" has-modal-card>
 			<praticas-modal :subscription="subscription" @added-practice="addPractice($event)"></praticas-modal>
 		</b-modal>
+        <b-message type="is-success" v-if="showAfterRegister">
+             “Sua inscrição foi cadastrada sob nº {{ id }} com sucesso e em breve será analisada pelos consultores responsáveis. 
+                Para acompanhar o status da sua ficha basta acessar o sistema novamente com seu login a qualquer momento.
+                Imprima esta página, ela é o seu comprovante de submissão da ficha de elegibilidade”
+        </b-message>
 	</section>
 </template>
 <script>
@@ -426,6 +423,7 @@
 import CommonData from './New/CommonData.vue'
 import PraticasModal from './New/PraticasModal.vue'
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
+import SubscriptionService from '../../services/subscription.service'
 import store from '../../store/index'
 
 export default {
@@ -446,19 +444,23 @@ export default {
 				subscription_contacts: [],
 				subscription_practices: []
             },
-			errors: [],
+            errors: [],
+            id: null,
+            showAfterRegister: false,
 			isPraticasModalActive: false
 		}
 	},
 	watch: {
 		"subscription_category_id"(newValue){
+            const date = new Date
 			this.subscription = {
                 is_public: "0",
                 tema_igs: '',
                 tema_peos: '',
 				subscription_places: [],
 				subscription_contacts: [],
-                subscription_practices: []
+                subscription_practices: [],
+                year: date.getFullYear()
 			}
             this.subscription.subscription_category_id = newValue
             store.commit('subscription/setSubscription', this.subscription)
@@ -500,14 +502,14 @@ export default {
         },
         save() {
             this.isLoading = true
-
-            store.dispatch('subscription/store', store.getters['subscription/get']).then(() => {
+            SubscriptionService.store(this.subscription).then(resp => {
                 this.isLoading = false
                 this.$buefy.toast.open({
                     message: 'Pedido enviado com sucesso!',
                     type: 'is-success'
                 })
-                this.$router.push({path: "/candidaturas", params: {completed: true}})
+                this.id = resp.message._id
+                this.showAfterRegister = true
             }).catch((error) => {
                 this.isLoading = false
                 alert(error)

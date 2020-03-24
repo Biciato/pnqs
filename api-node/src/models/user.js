@@ -1,5 +1,5 @@
-import mongoose from "mongoose";
-import CryptoJS from "crypto-js";
+import mongoose from "mongoose"
+import CryptoJS from "crypto-js"
 
 // User Columns
 const userSchema = new mongoose.Schema({
@@ -20,30 +20,30 @@ const userSchema = new mongoose.Schema({
         required: true,
         trim: true,
     },
-    createdAt: {
+    created_at: {
         type: Date,
         required: true,
         default: Date.now,
     },
-    isAdmin: {
+    is_admin: {
         type: Boolean,
         default: false,
     },
-    updatedAt: {
+    updated_at: {
         type: Date,
         required: true,
         default: Date.now,
     },
-    rememberHash: {
+    remember_hash: {
         type: String,
     },
-});
+})
 
 // encrypt password before save
 userSchema.pre("save", function(next) {
     const user = this
     user.password = CryptoJS.AES.encrypt(user.password, 'abes_secret').toString()
-    next();
-});
+    next()
+})
 
-export default mongoose.model("User", userSchema);
+export default mongoose.model("User", userSchema)

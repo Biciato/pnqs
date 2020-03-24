@@ -7,7 +7,16 @@ use PHPMailer\PHPMailer\SMTP;
 class Emails {
 
   public function new_register_email($name, $email, $id){
-    $content = "Prezado {$name}, <br>Sua candidatura foi registrada sob nº {$id}. Assim que for concluída a análise, o resultado estará disponível no sistema e você também será informado por e-mail.<br> Em caso de dúvidas entre em contato com cnqa@abes-dn.org.br ou fone: (21) 2277-3915";
+    $content = "
+    Prezado {$name}, <br>
+    
+    Sua candidatura foi registrada sob nº {$id}. 
+    
+    Assim que for concluída a análise, o resultado estará disponível no sistema <link> e você também será informado por e-mail.<br> 
+    
+    Guarde este e-mail, ele é o seu comprovante de submissão.
+    
+    Em caso de dúvidas entre em contato com cnqa@abes-dn.org.br ou fone: (21) 2277-3915";
     $this->send($content, 'Candidatura registrada!', $email);
   }
 
@@ -80,9 +89,7 @@ class Emails {
 
     if(!$mail->send()) {
       echo "Email not sent. " , $mail->ErrorInfo , PHP_EOL;
-    } else {
-      echo "Email sent!" , PHP_EOL;
-    }
+    } 
   }
 
 }

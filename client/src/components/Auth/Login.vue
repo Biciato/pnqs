@@ -43,6 +43,7 @@
 
 import LostPassword from './LostPassword.vue'
 import store from '../../store'
+import router from '../../router'
 
 export default {
 	name: "Login",
@@ -64,12 +65,12 @@ export default {
 		doLogin() {
 			this.isLoading = true
             this.errors = []
-			store.dispatch('auth/login', [this.email, this.password]).then((resp) => {
-				if (resp) {
-					this.errors.push(resp.message)
+			store.dispatch('auth/login', [this.email, this.password])
+				.then(() => router.push(router.history.current.query.redirect || '/candidaturas'))
+				.catch(() => {
+					this.errors.push(store.getters['auth/authenticationError'])
 					this.isLoading = false
-				}
-			})
+				})
 		},
 		onCnpjClick() {
 			this.$router.push("/update")

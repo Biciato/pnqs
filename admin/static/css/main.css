@@ -193,8 +193,8 @@ table th {
 .is-pulled-right {
   float: right !important; }
 
-.is-clipped {
-  overflow: hidden !important; }
+/* .is-clipped {
+  overflow: hidden !important; } */
 
 .is-overlay {
   bottom: 0;

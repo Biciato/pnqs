@@ -16,12 +16,12 @@
 				<b-table :data="tableData.length <= 0 ? [] : tableData" :striped="isStriped" :loading="isLoading">
 					<template slot-scope="props">
 						<b-table-column :field="'id'" :label="'#'">
-							{{props.row.id}}
+							{{props.row._id}}
 						</b-table-column>
 						<b-table-column :field="'name'" :label="'Razão Social'">
 							{{props.row.name}}
 						</b-table-column>
-						<b-table-column :field="'name'" :label="'Categoria'">
+						<b-table-column :field="'category'" :label="'Categoria'">
 							{{props.row.category.name}}
 						</b-table-column>
 						<b-table-column :field="'date'" :label="'Data'">
@@ -36,7 +36,7 @@
 							</span>
 						</b-table-column>
 						<b-table-column width="200" :field="''" :label="''">
-							<button type="button" class="button is-small is-primary" @click="view(props.row.id)">Ver Candidatura</button>
+							<button type="button" class="button is-small is-primary" @click="view(props.row._id)">Ver Candidatura</button>
 							<button type="button" class="button is-small" :disabled="props.row.status != 'ANL'" @click='confirm(props.row.id)'>Excluir</button>
 						</b-table-column>
 						</template>
@@ -84,17 +84,9 @@ export default {
 	methods: {
 		load(){
 			this.isLoading = true
-			store.dispatch('subscription/index').then((resp) => {
-				if (resp) {
-					this.$buefy.dialog.alert({
-						title: 'Erro',
-						message: 'Ocorreu um erro no sistema. Favor tentar mais tarde ou contactar o administrador.'
-					})
-					this.isLoading = false
-				} else {
-					this.tableData = store.getters['subscription/index']
-					this.isLoading = false
-				}
+			store.dispatch('subscription/index').then(() => {
+				this.tableData = store.getters['subscription/index']
+				this.isLoading = false 
 			})
 		},
 		confirm(id){

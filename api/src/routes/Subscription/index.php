@@ -66,8 +66,8 @@ $app->post("/subscription/", function ($request, $response, $args) {
   $subscriptionController->addPractices($praticas, $subscription->id);
 
   $emailsSender = new Emails();
-  $emailsSender->new_register_email($subscription['organization_name'], $userLogged['username'], $subscription['id']);
-  return $response->withJson(["message" => "Submetido com sucesso"], 200);
+  $emailsSender->new_register_email($subscription['candidate'], $userLogged['username'], $subscription['id']);
+  return $response->withJson(["message" => "Submetido com sucesso", 'id' => $subscription['id']], 200);
 })->add($auth_middleware);
 
 

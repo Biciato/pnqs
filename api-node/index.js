@@ -1,12 +1,12 @@
 
 import express from 'express'
-import routes from './routes'
+import routes from './src/routes'
 import bodyParser from 'body-parser'
 import cors from 'cors'
 import helmet from 'helmet'
 import morgan from 'morgan'
 import dotenv from 'dotenv'
-import { config } from './config'
+import { config } from './src/config'
 
 const env = process.env.NODE_ENV
 const stage = config[env]

@@ -10,13 +10,13 @@ const UserService = {
      * @throws AuthenticationError 
     **/
     login: async function(email, password) {
-        const token = window.btoa(`${email}:${password}`)
+        // const token = window.btoa(`${email}:${password}`)
         const requestData = {
             method: 'post',
             url: "/auth/login",
-            headers: {
+            /* headers: {
                 'X-FID-Authorization': `Basic ${token}`
-            },
+            }, */
             data: {
                 username: email,
                 password
@@ -36,7 +36,7 @@ const UserService = {
 
             return response.data.token
         } catch (error) {
-            throw new AuthenticationError(error.response.status, error.response.data.message)
+            throw new AuthenticationError(error.response.status, error.response.data.error)
         }
     },
 
@@ -131,7 +131,6 @@ const UserService = {
 
             return response
         } catch (error) {
-            console.table(error)
             throw new AuthenticationError(error.response.status, error.response.data.message)
         }
     }

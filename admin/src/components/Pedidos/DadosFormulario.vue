@@ -456,6 +456,7 @@
 						<button class="button is-success" @click="approve()">Aprovar</button>
 						<button class="button is-warning" @click="isReviewModalActive = true">Devolver</button>
 						<button class="button is-danger" @click="isRepproveModalActive = true"> Reprovar </button>
+						<button class="button is-info" @click="remove()"> Cancelar </button>
 						<button class="button" @click="$router.push('/pedidos-elegibilidade')">Voltar</button>
 					</div>
 				</div>
@@ -550,6 +551,17 @@ export default {
 						type: 'is-success'
 					})
 					this.getData()
+				});
+			}
+		},
+		remove() {
+			if (confirm("Tem certeza que deseja cancelar essa subscrição?")) {
+				subscriptionApi.remove(this.subscription.id).then((result) => {
+					this.$toast.open({
+						message: 'Subscrição cancelada com sucesso!',
+						type: 'is-success'
+					})
+					this.$router.push('/pedidos-elegibilidade')
 				});
 			}
 		},

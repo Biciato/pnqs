@@ -32,6 +32,8 @@ const actions = {
         try {
             const subscriptions = await SubscriptionService.index();
             commit('indexSuccess', subscriptions)
+
+            return true
         } catch (e) {
             if (e instanceof AuthenticationError) {
                 commit('indexError', {errorCode: e.errorCode, errorMessage: e.message})
