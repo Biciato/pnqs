@@ -36,7 +36,7 @@ $app->post("/auth/remember-password", function ($request, $response, $args) {
 $app->post("/auth/change-password", function ($request, $response, $args) {
   $params = $request->getParsedBody();
   $auth_control = new AuthenticatorController;
-  $result = $auth_control->changePassword($params);
+  $result = $auth_control->changePassword($request, $params);
   if ($result["status"] == "error")
     return $response->withJson(["message" => $result["message"]], 400);
   return $response->withJson($result, 200);

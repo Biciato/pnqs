@@ -85,7 +85,7 @@ class Emails {
     // Tells PHPMailer to send HTML-formatted email
     $mail->isHTML(true);
 
-    $mail->SMTPDebug = SMTP::DEBUG_SERVER;
+    // $mail->SMTPDebug = SMTP::DEBUG_SERVER;
 
     if(!$mail->send()) {
       echo "Email not sent. " , $mail->ErrorInfo , PHP_EOL;

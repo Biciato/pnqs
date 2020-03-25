@@ -6,12 +6,12 @@ require_once dirname(__DIR__) . "/models/SubscriptionModel.php";
 require_once dirname(__DIR__) . "/models/SubscriptionContactModel.php";
 require_once dirname(__DIR__) . "/models/SubscriptionPlaceModel.php";
 require_once dirname(__DIR__) . "/models/PracticeCategoryModel.php";
+require_once dirname(__DIR__) . "/models/SubscriptionHistoryModel.php";
 /**
 *
 */
 class SubscriptionController
 {
-
   public function get($subscriptionId, $user){
     if (!$user->is_admin) {
       if ($subscriptionId) {
@@ -67,7 +67,7 @@ class SubscriptionController
     return array("status" => "error", "message" => "Não foi possivel realizar a candidatura.");
   }
 
-  public function setStatus($params){
+  public function setStatus($params, $userLogged){
     //Save Subscription
     if (!isset($params["id"]))
     return array("status" => "error", "message" => "É obrigatório indicar qual a candidatura.");
@@ -81,14 +81,26 @@ class SubscriptionController
     if (empty($subscription))
     return array("status" => "error", "message" => "Candidatura não encontrada");
 
+    $subHistory = new SubscriptionHistoryModel;
+
     $subscription->setParams($params);
     try {
       $subscription->save();
-      return $subscription;
     } catch (Exception $e) {
       return array("status" => "error", "message" => $e);
     }
-    return array("status" => "error", "message" => "Não foi possivel atualizar a candidatura.");
+
+    $subHistory->setParams([
+      'username' => $userLogged['username'],
+      'subscription_id' => $params["id"],
+      'date' => date("Y-m-d H:i:s")
+    ]);
+    try {
+      $subHistory->save();
+    } catch (Exception $e) {
+      return array("status" => "error", "message" => $e);
+    }
+    return array("status" => "success", "message" => "atualizado com sucesso");
   }
 
   public function remove($id){

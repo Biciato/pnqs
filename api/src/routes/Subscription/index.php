@@ -37,14 +37,14 @@ $app->post("/subscription/", function ($request, $response, $args) {
 
   $params = $request->getParsedBody();
 
-  $contacts = $params["subscription_contacts"];
-  unset($params["subscription_contacts"]);
+  $contacts = $params["contacts"];
+  unset($params["contacts"]);
 
-  $places = $params["subscription_places"];
-  unset($params["subscription_places"]);
+  $places = $params["places"];
+  unset($params["places"]);
 
-  $praticas = $params["subscription_practices"];
-  unset($params["subscription_practices"]);
+  $praticas = $params["practices"];
+  unset($params["practices"]);
 
   $subscriptionController = new SubscriptionController;
   $params["user_id"] = $userLogged->id;
@@ -70,7 +70,6 @@ $app->post("/subscription/", function ($request, $response, $args) {
   return $response->withJson(["message" => "Submetido com sucesso", 'id' => $subscription['id']], 200);
 })->add($auth_middleware);
 
-
 $app->put("/subscription/", function ($request, $response, $args) {
   $userLogged = $request->getAttribute('user_logged');
   //if (!$userLogged->is_admin)
@@ -95,14 +94,14 @@ $app->put("/subscription/", function ($request, $response, $args) {
   }
 
   $subscriptionController = new SubscriptionController;
-  $subscription = $subscriptionController->setStatus($params);
+  $subscription = $subscriptionController->setStatus($params, $userLogged);
 
   if(isset($contacts)) $subscriptionController->updateContacts($contacts, $params["id"]);
   if(isset($places)) $subscriptionController->updatePlaces($places, $params["id"]);
   if(isset($practices)) $subscriptionController->updatePractices($practices, $params["id"]);
 
   if (is_array($subscription))
-    return $response->withJson(["message" => $subscription["message"]], 400);
+    return $response->withJson(["message" => $subscription["message"]], 200);
 
   $subscription = $subscriptionController->get($subscription['id'], $userLogged);
 

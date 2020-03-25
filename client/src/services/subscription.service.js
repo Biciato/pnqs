@@ -20,10 +20,10 @@ const SubscriptionService = {
     index: async function() {
         const requestData = {
             method: 'get',
-            url: "/subscriptions/",
-            // url: "/subscription/",
-            // headers: { 'X-Token': store.getters['auth/accessToken'] }
-            headers: { 'Authorization': `Bearer ${store.getters['auth/accessToken']}` }
+            // url: "/subscriptions/",
+            url: "/subscription/",
+            headers: { 'X-Token': store.getters['auth/accessToken'] }
+            // headers: { 'Authorization': `Bearer ${store.getters['auth/accessToken']}` }
         }
 
         try {
@@ -40,8 +40,8 @@ const SubscriptionService = {
         const requestData = {
             method: 'get',
             url: `/subscription/${id}`,
-            headers: { 'Authorization': `Bearer ${store.getters['auth/accessToken']}` }
-            // headers: { 'X-Token': store.getters['auth/accessToken'] }
+            // headers: { 'Authorization': `Bearer ${store.getters['auth/accessToken']}` }
+            headers: { 'X-Token': store.getters['auth/accessToken'] }
         }
 
         try {
@@ -56,8 +56,27 @@ const SubscriptionService = {
         const requestData = {
             method: 'post',
             url: `/subscription/`,
-            headers: { 'Authorization': `Bearer ${store.getters['auth/accessToken']}` },
-            // headers: { 'X-Token': store.getters['auth/accessToken'] },
+            // headers: { 'Authorization': `Bearer ${store.getters['auth/accessToken']}` },
+            headers: { 'X-Token': store.getters['auth/accessToken'] },
+            data: {
+                ...subscription
+            }
+        }
+
+        try {
+            const response = await ApiService.customRequest(requestData)
+            
+            return response.data
+        } catch (error) {
+            throw new AuthenticationError(error.response.status, error.response.data.detail)
+        }
+    },
+    update: async function(subscription) {
+        const requestData = {
+            method: 'put',
+            url: '/subscription/',
+            // headers: { 'Authorization': `Bearer ${store.getters['auth/accessToken']}` },
+            headers: { 'X-Token': store.getters['auth/accessToken'] },
             data: {
                 ...subscription
             }
@@ -75,8 +94,8 @@ const SubscriptionService = {
         const requestData = {
             method: 'delete',
             url: `/subscription/${id}`,
-            headers: { 'Authorization': `Bearer ${store.getters['auth/accessToken']}` }
-            // headers: { 'X-Token': store.getters['auth/accessToken'] }
+            // headers: { 'Authorization': `Bearer ${store.getters['auth/accessToken']}` }
+            headers: { 'X-Token': store.getters['auth/accessToken'] }
         }
 
         try {

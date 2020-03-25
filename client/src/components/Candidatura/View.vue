@@ -342,30 +342,30 @@
 					<div class="columns">
 						<div class="column">
 							<h5 class="title is-6">Atuação no segmento</h5>
-							<b-radio :disabled="canEdit" v-model="subscription.subgroup_id" native-value="1">
+							<b-checkbox :disabled="canEdit" v-model="subgroup_ids" native-value="Água">
 								Água
-							</b-radio>
-							<b-radio :disabled="canEdit" v-model="subscription.subgroup_id" native-value="2">
+							</b-checkbox>
+							<b-checkbox :disabled="canEdit" v-model="subgroup_ids" native-value="Esgoto e Efluentes Industriais">
 								Esgoto e Efluentes Industriais
-							</b-radio>
-							<b-radio :disabled="canEdit" v-model="subscription.subgroup_id" native-value="3">
+							</b-checkbox>
+							<b-checkbox :disabled="canEdit" v-model="subgroup_ids" native-value="Manejo de Águas Pluviais">
 								Manejo de Águas Pluviais
-							</b-radio>
-							<b-radio :disabled="canEdit" v-model="subscription.subgroup_id" native-value="4">
+							</b-checkbox>
+							<b-checkbox :disabled="canEdit" v-model="subgroup_ids" native-value="Resíduos Sólidos">
 								Resíduos Sólidos
-							</b-radio>
-							<b-radio :disabled="canEdit" v-model="subscription.subgroup_id" native-value="8">
+							</b-checkbox>
+							<b-checkbox :disabled="canEdit" v-model="subgroup_ids" native-value="Insumos">
 								Insumos
-							</b-radio>
-							<b-radio :disabled="canEdit" v-model="subscription.subgroup_id" native-value="9">
+							</b-checkbox>
+							<b-checkbox :disabled="canEdit" v-model="subgroup_ids" native-value="Serviços Operacionais e comerciais">
 								Serviços Operacionais e comerciais
-							</b-radio>
-							<b-radio :disabled="canEdit" v-model="subscription.subgroup_id" native-value="10">
+							</b-checkbox>
+							<b-checkbox :disabled="canEdit" v-model="subgroup_ids" native-value="Administrativos / Instalações">
 								Administrativos / Instalações
-							</b-radio>
-							<b-radio :disabled="canEdit" v-model="subscription.subgroup_id" native-value="11">
+							</b-checkbox>
+							<b-checkbox :disabled="canEdit" v-model="subgroup_ids" native-value="Outros Serviços">
 								Outros Serviços
-							</b-radio>
+							</b-checkbox>
 						</div>
 					</div>
 					<div class="columns">
@@ -390,7 +390,7 @@
 					</div>
 					<div class="columns">
 						<div class="column">
-							<b-checkbox :disabled="canEdit" v-model="subscription.has_restriction" native-value="0" true-value="0" false-value="1">
+							<b-checkbox :disabled="canEdit" v-model="subscription.has_restriction" native-value="0" true-value="1" false-value="0">
 								Declaramos neste ano e no ano anterior, não temos restrição de atuação transitada em julgado de qualquer natureza junto
 								aos órgãos de defesa do consumidor e/ou perante as instituições ou agências públicas federais, estaduais e municipais em
 								qualquer um dos três poderes.
@@ -598,7 +598,7 @@
 						</div>
 					</div>
 				</template>
-				<button class="button is-primary" @click="save()" v-if="!canEdit">Enviar Candidatura</button>
+				<button class="button is-primary" @click="validate()" v-if="!canEdit">Enviar Candidatura</button>
 			</template>
 		</div>
 
@@ -608,12 +608,26 @@
 
 import moment from 'moment'
 import store from '../../store/index'
+import SubscriptionService from "../../services/subscription.service"
 import axios from 'axios'
 
 export default {
 	data() {
 		const tablePlaces = []
 		return {
+			subgroups: [
+				{ id: 1, name: 'Água' },
+				{ id: 2, name: 'Esgoto e Efluentes Industriais' },
+				{ id: 3, name: 'Manejo de Águas Pluviais' },
+				{ id: 4, name: 'Resíduos Sólidos' },
+				{ id: 5, name: 'Clientes' },
+				{ id: 6, name: 'Apoio' },
+				{ id: 7, name: 'Sócioambiental' },
+				{ id: 8, name: 'Insumos' },
+				{ id: 9, name: 'Serviços Operacionais e Comerciais' },
+				{ id: 10, name: 'Administrativos / Instalações' },
+				{ id: 11, name: 'Outros Serviços' }
+			],
 			isLoading: false,
 			checkbox: null,
 			radio: null,
@@ -662,6 +676,7 @@ export default {
 					numericOnly: true
 				}
 			},
+			subgroup_ids: ["Água" ,"Esgoto e Efluentes Industriais"]
 		}
 	},
 	watch: {
@@ -705,7 +720,8 @@ export default {
 				delete this.subscription["subgroup"]
 				this.getContacts()
 				this.getPlaces()
-				this.subscription.agree_examiners = this.$R.toString(this.$R.or(store.getters['subscription/get'].agree_examiners, []))
+				this.getSubgroupIds(this.subscription.subgroup_id)
+				this.subscription.agree_examiners = this.$R.toString(this.$R.or(store.getters['subscription/get'].agree_examiners, 0))
 			})
 		},
 		getContacts(){
@@ -723,12 +739,65 @@ export default {
 		getPlaces(){
 			this.tablePlaces = this.subscription.places
 		},
+		getSubgroupIds(subgroup_ids) {
+			if (subgroup_ids) {
+				if (subgroup_ids.length > 1) {
+					this.subgroup_ids = subgroup_ids.split(',').map(item => item.trim())
+				} else {
+					this.subgroup_ids = this.subgroups.find(subgroup => subgroup.id === subgroup_ids).name
+				}
+			} 
+		},
 		formatDateToInput(date){
 			return moment(Date.parse(date)).format('DD/MM/YYYY')
 		},
 		formatDate(date){
 			return moment(Date.parse(date)).format('YYYY-MM-DD')
-		}
+		},
+		validate(){
+            if (this.subscription.places.length < 1) {
+                    this.$buefy.dialog.alert({
+                        title: 'Aviso',
+                        message: 'É obrigatório enviar ao menos um local da instalação com força de trabalho.',
+                        confirmText: 'Ok!'
+                    })
+            }
+            if (this.subscription.subscription_category_id === 3) {
+                if (this.subscription.practices.length < 1) {
+                        this.$buefy.dialog.alert({
+                            title: 'Aviso',
+                            message: 'Favor cadastrar pelo menos 1 Prática',
+                            confirmText: 'Ok!'
+                        })
+                }
+                if (
+                    this.subscription.practices.length > 0 &&
+                    this.subscription.places.length > 0
+                ) {
+                    this.save()
+                }
+            } else {
+                if (
+                    this.subscription.places.length > 0
+                ) {
+                    this.save()
+                }
+            }
+        },
+        save() {
+            this.isLoading = true
+            SubscriptionService.update(this.subscription).then(() => {
+                this.isLoading = false
+                this.$buefy.toast.open({
+                    message: 'Pedido enviado com sucesso!',
+                    type: 'is-success'
+                })
+                this.$router.push('/candidaturas')
+            }).catch((error) => {
+                this.isLoading = false
+                alert(error)
+            })
+        }
 	}
 }
 

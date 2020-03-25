@@ -16,7 +16,7 @@
 				<b-table :data="tableData.length <= 0 ? [] : tableData" :striped="isStriped" :loading="isLoading">
 					<template slot-scope="props">
 						<b-table-column :field="'id'" :label="'#'">
-							{{props.row._id}}
+							{{props.row.id}}
 						</b-table-column>
 						<b-table-column :field="'name'" :label="'Razão Social'">
 							{{props.row.name}}
@@ -36,7 +36,7 @@
 							</span>
 						</b-table-column>
 						<b-table-column width="200" :field="''" :label="''">
-							<button type="button" class="button is-small is-primary" @click="view(props.row._id)">Ver Candidatura</button>
+							<button type="button" class="button is-small is-primary" @click="view(props.row.id)">Ver Candidatura</button>
 							<button type="button" class="button is-small" :disabled="props.row.status != 'ANL'" @click='confirm(props.row.id)'>Excluir</button>
 						</b-table-column>
 						</template>

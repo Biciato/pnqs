@@ -25,8 +25,8 @@ Vue.config.productionTip = false
 const baseUrl = process.env.NODE_ENV === "production"
                   ? 'http://abes-app.org.br/teste/api/public/'
                   : 
-                  'http://0.0.0.0:9000/'
-                  //'http://localhost:8000/public/'
+                  //'http://0.0.0.0:9000/'
+                  'http://localhost:8000/public/'
 ApiService.init(baseUrl)
 
 // If token exists set header

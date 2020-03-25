@@ -4,6 +4,7 @@ use Illuminate\Database\Query\Builder;
 use \Firebase\JWT\JWT;
 
 require_once dirname(__DIR__) . "/models/UserModel.php";
+require_once dirname(__DIR__) . "/models/ChangePasswordModel.php";
 /**
 *
 */
@@ -54,7 +55,7 @@ class AuthenticatorController
     return array("status"=> "success", "token" => $new_token);
   }
 
-  public function changePassword($params){
+  public function changePassword($request, $params){
     if (empty($params["email"]))
       return array("status" => "error", "message" => "O campo Usuário é obrigatório.");
     if (empty($params["password"]))
@@ -64,6 +65,12 @@ class AuthenticatorController
       return $user;
     $user->password = password_hash($params["password"], PASSWORD_DEFAULT);
     $user->save();
+    $cp = new ChangePasswordModel;
+    $cp->setParams([
+      'email' => $user->username,
+      'ip' => $request->getAttribute('ip_address')
+    ]);
+    $cp->save();
     return array("status"=> "success");
   }
 

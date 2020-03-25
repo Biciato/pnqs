@@ -66,9 +66,6 @@
                             </div>
                             <template v-if="subscription.subscription_category_id == 4">
                                 <div class="block" >
-                                    <b-radio v-model="subscription.subscription_subcategory_id" native-value="7">
-                                        <span class="is-size-7">Nivel B - 125 Pontos “Iniciação para a Excelência” - Autoavaliação Virtual</span>
-                                    </b-radio>
                                     <b-radio v-model="subscription.subscription_subcategory_id" native-value="8">
                                         <span class="is-size-7">Nível B - 125 pontos - “Primeiros Passos para a Excelência”</span>
                                     </b-radio>
@@ -76,23 +73,16 @@
                                         <span class="is-size-7">Nível I – 250 pontos - “Compromisso com a Excelência</span>
                                     </b-radio>
                                     <b-radio v-model="subscription.subscription_subcategory_id" native-value="10">
-                                        <span class="is-size-7">Nível II – 500 pontos – Rumo à Excelência</span>
+                                        <span class="is-size-7">Nível II – "Rumo à Excelência"</span>
+                                    </b-radio>
+                                     <b-radio v-model="subscription.subscription_subcategory_id" native-value="7">
+                                        <span class="is-size-7">Nível III - "Excelência"</span>
                                     </b-radio><br><br>
-                                    <p class="control is-size-7 has-text-grey">Nota: Nível B 125 pontos, também denominado “Primeiros Passos para a Excelência” e Nível I 250 pontos, também denominado de “Compromisso com a Excelência” seguem a sistemática da Categoria AMEGSA descrita a partir da página 16 do Regulamento PNQS.</p>
-                                </div>
-                                <div class="">
-                                    <hr>
-                                    <p>
-                                        O <strong>SQFSA</strong> é destinado a organizações sediadas em território nacional, que prestam serviços ou fornecem insumos para
-                                        organizações que detém a concessão (concessionárias) ou delegação (departamentos ou autarquias municipais e afins) de
-                                        serviço de saneamento ambiental.<br><br>
-                                        São elegíveis os seguintes tipos de organização:<br><br>
-                                        1) Microempreendedor Individual;<br>
-                                        2) Micro e pequena empresa;<br>
-                                        3) Empresa;<br>
-                                        4) ONG – Organização Não Governamental (sem fins lucrativos).<br>
+                                    <p class="control is-size-7 has-text-grey">
+                                        Nota: O <strong>SQFSA</strong> é destinado a organizações cpm CNPJ próprio sediadas em território nacional, que 
+                                        prestam serviços ou  fornecem insumos para organizações que detém a concessão (concessionárias) ou delegação 
+                                        (departamentos ou autarquias municipais e afins) de serviços de saneamento ambiental.
                                     </p>
-                                    <hr>
                                 </div>
                                 <div class="columns">
                                     <div class="column">
@@ -119,30 +109,30 @@
                                 <div class="columns">
                                     <div class="column">
                                         <h5 class="title is-6">Atuação no segmento</h5>
-                                        <b-radio v-model="subscription.subgroup_id" native-value="1">
+                                        <b-checkbox v-model="subgroup_ids" native-value="Água">
                                             Água
-                                        </b-radio>
-                                        <b-radio v-model="subscription.subgroup_id" native-value="2">
+                                        </b-checkbox>
+                                        <b-checkbox v-model="subgroup_ids" native-value="Esgoto e Efluentes Industriais">
                                             Esgoto e Efluentes Industriais
-                                        </b-radio>
-                                        <b-radio v-model="subscription.subgroup_id" native-value="3">
+                                        </b-checkbox>
+                                        <b-checkbox v-model="subgroup_ids" native-value="Manejo de Águas Pluviais">
                                             Manejo de Águas Pluviais
-                                        </b-radio>
-                                        <b-radio v-model="subscription.subgroup_id" native-value="4">
+                                        </b-checkbox>
+                                        <b-checkbox v-model="subgroup_ids" native-value="Resíduos Sólidos">
                                             Resíduos Sólidos
-                                        </b-radio>
-                                        <b-radio v-model="subscription.subgroup_id" native-value="8">
+                                        </b-checkbox>
+                                        <b-checkbox v-model="subgroup_ids" native-value="Insumos">
                                             Insumos
-                                        </b-radio>
-                                        <b-radio v-model="subscription.subgroup_id" native-value="9">
+                                        </b-checkbox>
+                                        <b-checkbox v-model="subgroup_ids" native-value="Serviços Operacionais e comerciais">
                                             Serviços Operacionais e comerciais
-                                        </b-radio>
-                                        <b-radio v-model="subscription.subgroup_id" native-value="10">
+                                        </b-checkbox>
+                                        <b-checkbox v-model="subgroup_ids" native-value="Administrativos / Instalações">
                                             Administrativos / Instalações
-                                        </b-radio>
-                                        <b-radio v-model="subscription.subgroup_id" native-value="11">
+                                        </b-checkbox>
+                                        <b-checkbox v-model="subgroup_ids" native-value="Outros Serviços">
                                             Outros Serviços
-                                        </b-radio>
+                                        </b-checkbox>
                                     </div>
                                 </div>
                             </template>
@@ -327,7 +317,7 @@
                                 </div>
                             </div>
                             <hr>
-                            <b-table :data="subscription.subscription_practices.length <= 0 ? [] : subscription.subscription_practices" :striped="true" :loading="isLoading">
+                            <b-table :data="subscription.practices.length <= 0 ? [] : subscription.practices" :striped="true" :loading="isLoading">
                                 <template slot-scope="props">
                                     <b-table-column :field="'name'" :label="'Denominação da Prática'">
                                         {{props.row.name}}
@@ -358,7 +348,7 @@
                             <div class="columns">
                                 <div class="column">
                                     <ValidationProvider rules="required" v-slot="{ errors }">
-                                        <b-checkbox v-model="subscription.agree_sqfsa" native-value="1">
+                                        <b-checkbox v-model="subscription.agree_sqfsa" native-value="0">
                                             Estamos cientes de que ao participar do PNQS e submeter a candidatura de nossa organização concordamos com os
                                             termos e condições do Regulamento do ciclo, em todas as suas etapas.
                                         </b-checkbox>
@@ -369,7 +359,7 @@
                             <div class="columns">
                                 <div class="column">
                                     <ValidationProvider rules="required" v-slot="{ errors }">
-                                        <b-checkbox v-model="subscription.has_autonomy" native-value="1">
+                                        <b-checkbox v-model="subscription.has_autonomy" native-value="0">
                                             Declaramos ter funções e estruturas administrativas próprias e autônomas, no sentido de sermos responsáveis pelo
                                             planejamento das ações para atingir nossos objetivos, cumprir nossa missão e atender nossos clientes. Possuímos clientes
                                             como pessoas físicas ou outras pessoas jurídicas, consumidoras, usuárias ou compradoras regulares de nossos
@@ -393,10 +383,11 @@
                             </div>
                             <div class="columns">
                                 <div class="column">
-                                    <b-checkbox v-model="subscription.agree_examiners" native-value="1">
-                                        Concordamos com a participação de empregados de empresas do setor como acompanhantes da banca de examinadores
-                                        (aplicável as organizações candidatas ao Nível B 125 pontos, também denominado “Primeiros Passos para a Excelência”
-                                        e Nível I 250 pontos, também denominado de “Compromisso com a Excelência”).
+                                    <b-checkbox v-model="subscription.agree_examiners" native-value="0">
+                                        Concordamos com a participação de empregados de empresas do setor, sem conflitos de interesses com a Banca examinadora
+                                        como acompanhantes da banca de examinadores (aplicável as organizações candidatas ao Nível B 125 pontos, 
+                                        também denominado “Primeiros Passos para a Excelência” e Nível I 250 pontos, também denominado de “Compromisso com a 
+                                        Excelência”).
                                     </b-checkbox>
                                 </div>
                             </div>
@@ -440,14 +431,15 @@ export default {
 			name: "",
 			subscription: {
 				is_public: "0",
-				subscription_places: [],
-				subscription_contacts: [],
-				subscription_practices: []
+				places: [],
+				contacts: [],
+                practices: []
             },
             errors: [],
             id: null,
             showAfterRegister: false,
-			isPraticasModalActive: false
+			isPraticasModalActive: false,
+            subgroup_ids: []
 		}
 	},
 	watch: {
@@ -457,21 +449,26 @@ export default {
                 is_public: "0",
                 tema_igs: '',
                 tema_peos: '',
-				subscription_places: [],
-				subscription_contacts: [],
-                subscription_practices: [],
+				places: [],
+				contacts: [],
+                practices: [],
                 year: date.getFullYear()
 			}
             this.subscription.subscription_category_id = newValue
             store.commit('subscription/setSubscription', this.subscription)
-		}
+        },
+        /* "subscription.subgroup_ids"(val) {
+            this.subscription.subgroup_ids.includes(val) 
+                ? this.subscription.subgroup_ids.splice(this.subscription.subgroup_ids.indexOf(val), 1)
+                : this.subscription.subgroup_ids.push(val)
+        } */
 	},
 	created(){
 
 	},
 	methods: {
 		validate(){
-            if (this.subscription.subscription_places.length < 1) {
+            if (this.subscription.places.length < 1) {
                     this.$buefy.dialog.alert({
                         title: 'Aviso',
                         message: 'É obrigatório enviar ao menos um local da instalação com força de trabalho.',
@@ -479,7 +476,7 @@ export default {
                     })
             }
             if (this.subscription.subscription_category_id === 3) {
-                if (this.subscription.subscription_practices.length < 1) {
+                if (this.subscription.practices.length < 1) {
                         this.$buefy.dialog.alert({
                             title: 'Aviso',
                             message: 'Favor cadastrar pelo menos 1 Prática',
@@ -487,14 +484,14 @@ export default {
                         })
                 }
                 if (
-                    this.subscription.subscription_practices.length > 0 &&
-                    this.subscription.subscription_places.length > 0
+                    this.subscription.practices.length > 0 &&
+                    this.subscription.places.length > 0
                 ) {
                     this.save()
                 }
             } else {
                 if (
-                    this.subscription.subscription_places.length > 0
+                    this.subscription.places.length > 0
                 ) {
                     this.save()
                 }
@@ -502,13 +499,14 @@ export default {
         },
         save() {
             this.isLoading = true
+            this.subscription.subgroup_id = this.subgroup_ids.join()
             SubscriptionService.store(this.subscription).then(resp => {
                 this.isLoading = false
                 this.$buefy.toast.open({
                     message: 'Pedido enviado com sucesso!',
                     type: 'is-success'
                 })
-                this.id = resp.message._id
+                this.id = resp.id
                 this.showAfterRegister = true
             }).catch((error) => {
                 this.isLoading = false
@@ -518,12 +516,12 @@ export default {
             })
         },
 		addPractice(practice){
-			this.subscription.subscription_practices.push(practice)
+			this.subscription.practices.push(practice)
 		},
 		removePractice(practice){
-			var indexOf = this.subscription.subscription_practices.indexOf(practice)
+			var indexOf = this.subscription.practices.indexOf(practice)
 			if (indexOf >= 0) {
-				this.subscription.subscription_practices.splice(indexOf, 1)
+				this.subscription.practices.splice(indexOf, 1)
 			}
 		}
 	}

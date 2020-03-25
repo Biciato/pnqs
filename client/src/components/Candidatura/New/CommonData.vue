@@ -8,9 +8,6 @@
                         <option value="Unidade Autônoma de outra organização">
                             Unidade Autônoma de outra organização
                         </option>
-                        <option value="Unidade de Apoio de outra organização">
-                            Unidade de Apoio de outra organização
-                        </option>
                     </b-select>
                 </b-field>
             </div>
@@ -144,7 +141,7 @@
             <div class="column">
                 <b-table
                     :data="
-                        editedSubscription.subscription_places.length <= 0 ? [] : editedSubscription.subscription_places
+                        editedSubscription.places.length <= 0 ? [] : editedSubscription.places
                     "
                     :striped="true"
                     :loading="isLoading"
@@ -210,9 +207,9 @@
             <div class="column">
                 <b-table
                     :data="
-                        editedSubscription.subscription_contacts.length <= 0
+                        editedSubscription.contacts.length <= 0
                             ? []
-                            : editedSubscription.subscription_contacts
+                            : editedSubscription.contacts
                     "
                     :striped="true"
                     :loading="isLoading"
@@ -337,11 +334,11 @@
                 return moment(Date.parse(date)).format("YYYY-MM-DD");
             },
             addPlace(place) {
-                var indexof = this.editedSubscription.subscription_places.indexOf(place);
+                var indexof = this.editedSubscription.places.indexOf(place);
                 if (indexof > -1) {
-                    this.editedSubscription.subscription_places[indexof] = place;
+                    this.editedSubscription.places[indexof] = place;
                 } else {
-                    this.editedSubscription.subscription_places.push(place);
+                    this.editedSubscription.places.push(place);
                 }
                 this.place = {};
             },
@@ -350,11 +347,11 @@
                 this.isPlacesModalActive = true;
             },
             addContact(contact) {
-                var indexof = this.editedSubscription.subscription_contacts.indexOf(contact);
+                var indexof = this.editedSubscription.contacts.indexOf(contact);
                 if (indexof > -1) {
-                    this.editedSubscription.subscription_contacts[indexof] = contact;
+                    this.editedSubscription.contacts[indexof] = contact;
                 } else {
-                    this.editedSubscription.subscription_contacts.push(contact);
+                    this.editedSubscription.contacts.push(contact);
                 }
                 this.contact = {};
             },
@@ -363,15 +360,15 @@
                 this.isContatosModalActive = true;
             },
             removePlace(place) {
-                var indexOf = this.editedSubscription.subscription_places.indexOf(place);
+                var indexOf = this.editedSubscription.places.indexOf(place);
                 if (indexOf >= 0) {
-                    this.editedSubscription.subscription_places.splice(indexOf, 1);
+                    this.editedSubscription.places.splice(indexOf, 1);
                 }
             },
             removeContact(contact) {
-                var indexOf = this.editedSubscription.subscription_contacts.indexOf(contact);
+                var indexOf = this.editedSubscription.contacts.indexOf(contact);
                 if (indexOf >= 0) {
-                    this.editedSubscription.subscription_contacts.splice(indexOf, 1);
+                    this.editedSubscription.contacts.splice(indexOf, 1);
                 }
             },
         },
