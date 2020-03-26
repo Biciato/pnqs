@@ -6,7 +6,7 @@
   "scripts": {
     "test": "echo \"Error: no test specified\" && exit 1",
     "build": "rimraf dist/ && babel ./ --out-dir / --ignore ./node_modules,./.babelrc,./package.json,./npm-debug.log --unsafe-perm=true --allow-root --copy-files",
-    "start": "nodemon index.js --exec babel-node --presets babel-preset-env"
+    "start": "env-cmd nodemon index.js --exec babel-node --presets babel-preset-env"
   },
   "author": "Leandro Biciato",
   "license": "ISC",
@@ -18,6 +18,7 @@
     "cross-env": "^7.0.2",
     "crypto-js": "^4.0.0",
     "dotenv": "^8.2.0",
+    "env-cmd": "^10.1.0",
     "express": "^4.17.1",
     "helmet": "^3.21.3",
     "jsonwebtoken": "^8.5.1",

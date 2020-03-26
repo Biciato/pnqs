@@ -1,6 +1,10 @@
 import mongoose from 'mongoose'
 
 const subscriptionPlaceSchema = new mongoose.Schema({
+    id: {
+        type: String,
+        required: true
+    },
     name: {
         type: String,
         required: true
@@ -30,7 +34,7 @@ const subscriptionPlaceSchema = new mongoose.Schema({
         required: true
     },
     number: {
-        type: Number, 
+        type: String, 
         required: true
     },
     complement: {

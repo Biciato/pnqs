@@ -1,9 +1,11 @@
 import mongoose from "mongoose"
 import User from "../models/user"
-import CryptoJS from "crypto-js"
+import bcrypt from 'bcrypt'
 import jwt from "jsonwebtoken"
 
 export const UserController = {
+
+    // TODO: handle user already exists
     login: (req, res) => {
         const { username, password } = req.body
 
@@ -13,11 +15,9 @@ export const UserController = {
             if (!err) {
                 User.findOne({ username }, (err, user) => {
                     if (!err && user) {
-                        const bytes  = CryptoJS.AES.decrypt(user.password, 'abes_secret')
-                        const userPassword = bytes.toString(CryptoJS.enc.Utf8)
-                        console.log(userPassword)
-                        // We could compare passwords in our model instead of below as well
-                        if (password === userPassword) {
+                        let hash = user.password
+                        hash = hash.replace(/^\$2y(.+)$/i, '$2a$1')
+                        if (bcrypt.compareSync(password, hash)) {
                             // Create a token
                             const payload = { user: user.name }
                             const options = { expiresIn: "2d", issuer: "http://abes-app.org.br" }

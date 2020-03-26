@@ -3,6 +3,10 @@ import CryptoJS from "crypto-js"
 
 // User Columns
 const userSchema = new mongoose.Schema({
+    id: {
+        type: String,
+        required: true
+    },
     name: {
         type: String,
         required: true,
@@ -37,12 +41,13 @@ const userSchema = new mongoose.Schema({
     remember_hash: {
         type: String,
     },
+    role: {
+        type: String
+    }
 })
 
-// encrypt password before save
-userSchema.pre("save", function(next) {
-    const user = this
-    user.password = CryptoJS.AES.encrypt(user.password, 'abes_secret').toString()
+userSchema.pre('save', function(next){
+    this.password = bcrypt.hashSync(this.password, saltRounds)
     next()
 })
 

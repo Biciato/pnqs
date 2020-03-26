@@ -3,7 +3,10 @@ import {MongooseAutoIncrementID} from 'mongoose-auto-increment-reworked'
 
 // Subscription Columns
 const subscriptionSchema = new mongoose.Schema({
-    _id: Number,
+    id: {
+        type: String,
+        required: true
+    },
     user_id: {
         type: String,
         required: true
@@ -62,7 +65,7 @@ const subscriptionSchema = new mongoose.Schema({
         type: Number
     },
     subgroup_id: {
-        type: Number
+        type: String
     },
     status: {
         type: String,

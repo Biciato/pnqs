@@ -1,6 +1,10 @@
 import mongoose from 'mongoose'
 
 const subscriptionPracticeSchema = new mongoose.Schema({
+    id: {
+        type: String,
+        required: true
+    },
     practice_category: {
         type: String, 
         required: true

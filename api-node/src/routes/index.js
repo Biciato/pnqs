@@ -1,6 +1,8 @@
 import { UserController } from '../controllers/user-controller'
 import { SubscriptionController } from '../controllers/subscription-controller'
 import { utils } from '../utils'
+import Subscription from '../models/subscription'
+import mongoose from "mongoose"
 
 const routes = app => {
     // User's routes
@@ -14,3 +16,4 @@ const routes = app => {
 }
 
 export default routes
+
