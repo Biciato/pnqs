@@ -1,2 +1,3 @@
 .env
 db_data/abes_pnqs.sql
+.vscode

@@ -42,8 +42,8 @@
                                         </b-datepicker>
                                         <span style="color: red">{{ errors[0] }}</span>
                                     </ValidationProvider>
-                                    <p class="help is-danger">Serão válidas as práticas implementadas a partir de 2017.</p>
                                 </b-field>
+                                <p class="help is-danger">Serão válidas as práticas implementadas a partir de 2017.</p>
                             </div>
                         </div>
                         <div class="columns">
@@ -126,12 +126,12 @@
                             <div class="column">
                                 <b-field label="Data de implantação">
                                     <ValidationProvider name="implantation_start_dt" rules="required" v-slot="{ errors }">
-                                        <b-datepicker  name="implantation_start_dt" v-model="practice.implantation_start_dt" placeholder="Selecione a data" icon="calendar-today">
+                                        <b-datepicker name="implantation_start_dt" v-model="practice.implantation_start_dt" placeholder="Selecione a data:" icon="calendar-today">
                                         </b-datepicker>
                                         <span style="color: red">{{ errors[0] }}</span>
                                     </ValidationProvider>
-                                    <p class="help is-danger">Serão válidas os Programas implementados a partir de 2017.</p>
                                 </b-field>
+                                <p class="help is-danger">Serão válidas os Programas implementados a partir de 2017.</p>
                             </div>
                         </div>
                         <div class="columns">

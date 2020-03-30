@@ -427,6 +427,32 @@
 						</div>
 					</div>
 					<br />
+					<template v-if="subscription.subscription_category_id == 3">
+						<h3 class="title is-5">Cadastro das Práticas / Programas</h3>
+						<hr>
+						<b-table :data="subscription.practices.length <= 0 ? [] : subscription.practices" :striped="true" :loading="isLoading">
+							<template slot-scope="props">
+								<b-table-column :field="'name'" :label="'Denominação da Prática'">
+									{{props.row.name}}
+								</b-table-column>
+								<b-table-column :field="'name'" :label="'Categoria da Prática'">
+									{{props.row.practice_category}}
+								</b-table-column>
+								<b-table-column :field="''" :label="'#'">
+									<a class="button is-danger is-small" @click="removePractice(props.row)">X</a>
+								</b-table-column>
+							</template>
+							<template slot="empty">
+								<section class="section">
+									<div class="content has-text-grey has-text-centered">
+										<p>
+											<span class="is-size-6">Inclua as práticas.</span><br><br>
+										</p>
+									</div>
+								</section>
+							</template>
+						</b-table>
+					</template>
 					<h1 class="title is-6">Aplicável para categoria AMEGSA</h1>
 					<div class="columns">
 						<div class="column">
@@ -634,7 +660,8 @@ export default {
 			name: "",
 			subscription: {
 				places: [],
-				contacts: []
+				contacts: [],
+				practices: []
 			},
 			tablePlaces,
 			isPlacesModalActive: false,

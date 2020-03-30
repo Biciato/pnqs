@@ -144,6 +144,7 @@ class SubscriptionController
     foreach ($practices as $key => $value) {
       $practice = new SubscriptionPracticeModel;
       $practice->setParams($value);
+      $practice->implantation_start_dt = date("Y-m-d H:i:s", strtotime($value["implantation_start_dt"]));
       $practice->subscription_id = $subscription_id;
       $practice->save();
     }

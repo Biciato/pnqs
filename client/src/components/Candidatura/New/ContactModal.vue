@@ -8,7 +8,7 @@
                 <form @submit.prevent="saveContact">
                     <div class="columns">
                         <div class="column">
-                            <b-field label="Categoria do Contato">
+                            <b-field :label="label">
                                 <ValidationProvider name="categoria" rules="required" v-slot="{ errors }">
                                     <b-select v-model="editContact.type" name="categoria">
                                         <option :value="category.key" 
@@ -58,7 +58,8 @@
 </template>
 
 <script>
-import { ValidationProvider, ValidationObserver } from 'vee-validate';
+import { ValidationProvider, ValidationObserver } from 'vee-validate'
+import store from '../../../store'
 
 export default {
 	components: {
@@ -79,7 +80,8 @@ export default {
                 { key: "APR", val: 'Apresentador do Case  no Seminário de benchmarking' },
                 { key: "REP", val: 'Representante no Seminário de benchmarking' },
                 { key: "FOR", val: 'Fornecedor indicado' }
-            ]
+            ], 
+            label: `${this.subscription.subscription_category_id === '4' ? 'Tipo de' : 'Categoria do'} Contato`
 		}
 	},
 	created(){
@@ -89,13 +91,17 @@ export default {
 	},
 	methods: {
 		saveContact(){
-            this.$emit('added-contact', this.editContact)
+            this.subscription.contacts.push(this.editContact)
+            store.commit('subscription/setSubscription', this.subscription)
             this.$parent.close()
         },
         uniques() {
-            return this.categories.filter(cat => 
-                !this.subscription.subscription_contacts.some(contact => contact.type === cat.key)
-            )
+            let categories = this.categories.filter(cat => 
+                !this.subscription.contacts.some(contact => contact.type === cat.key))
+            if (this.subscription.subscription_subcategory_id === '6') {
+                categories = categories.filter(cat => cat.key !== 'FOR')
+            }   
+            return categories 
         }
 	}
 }

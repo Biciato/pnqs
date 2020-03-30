@@ -173,29 +173,6 @@
 
                         <template v-if="subscription.subscription_category_id == 1">
                             <h1 class="title is-6">Aplicável para categoria IGS</h1>
-                            <div class="block">
-                                <b-radio v-model="subscription.subgroup_id" native-value="3">
-                                    Água
-                                </b-radio>
-                                <b-radio v-model="subscription.subgroup_id" native-value="4">
-                                    Esgoto e Efluentes Industriais
-                                </b-radio>
-                                <b-radio v-model="subscription.subgroup_id" native-value="5">
-                                    Manejo de Águas Pluviais
-                                </b-radio>
-                                <b-radio v-model="subscription.subgroup_id" native-value="6">
-                                    Resíduos Sólidos
-                                </b-radio>
-                                <b-radio v-model="subscription.subgroup_id" native-value="7">
-                                    Clientes
-                                </b-radio>
-                                <b-radio v-model="subscription.subgroup_id" native-value="8">
-                                    Apoio
-                                </b-radio>
-                                <b-radio v-model="subscription.subgroup_id" native-value="9">
-                                    Sócioambiental
-                                </b-radio>
-                            </div>
                             <div class="columns">
                                 <div class="column">
                                     <b-field label="Denominação da Prática">
@@ -511,8 +488,6 @@ export default {
             }).catch((error) => {
                 this.isLoading = false
                 alert(error)
-                this.subscription.contacts = []
-                this.subscription.places = []
             })
         },
 		addPractice(practice){
