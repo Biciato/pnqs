@@ -105,6 +105,22 @@ const SubscriptionService = {
         } catch (error) {
             throw new AuthenticationError(error.response.status, error.response.data.detail)
         }
+    },
+    getPastSublist: async function() {
+        const requestData = {
+            method: 'get',
+            url: `/get-past-sublist`,
+            // headers: { 'Authorization': `Bearer ${store.getters['auth/accessToken']}` }
+            headers: { 'X-Token': store.getters['auth/accessToken'] }
+        }
+
+        try {
+            const response = await ApiService.customRequest(requestData)
+            
+            return response.data
+        } catch (error) {
+            throw new AuthenticationError(error.response.status, error.response.data.detail)
+        }
     }
 }
 

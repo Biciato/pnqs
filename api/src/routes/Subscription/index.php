@@ -11,6 +11,13 @@ $app->get("/subscription/[{subscriptionId}]", function ($request, $response, $ar
   return $response->withJson(["message" => "Retornado com sucesso", "result" => $subscriptions], 200);
 })->add($auth_middleware);
 
+$app->get('/get-past-sublist', function ($request, $response) {
+  $userLogged = $request->getAttribute('user_logged');
+  $subscriptionController = new SubscriptionController;
+  $subscriptions = $subscriptionController->getPastSublist($userLogged);
+  return $response->withJson(["message" => "Retornado com sucesso", "result" => $subscriptions], 200);
+})->add($auth_middleware);
+
 $app->post("/subscriptions", function ($request, $response, $args){
   $userLogged = $request->getAttribute('user_logged');
   $params = $request->getParsedBody();

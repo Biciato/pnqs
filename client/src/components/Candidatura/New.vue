@@ -6,18 +6,19 @@
                     <div class="columns">
                         <div class="column">
                             <h2 class="title is-3">FICHA DE ELEGIBILIDADE</h2>
-                            <h5 class="title is-5">Selecione a categoria</h5>
+                            <a class="button is-primary" @click="showSublist = true">Carregar Dados</a>
+                            <h5 class="title is-5" style="margin-top: 0.5em">Selecione a categoria</h5>
                             <div class="block">
-                                <b-radio v-model="subscription_category_id" native-value="1">
+                                <b-radio v-model="subscription.subscription_category_id" native-value="1">
                                     <span class="is-size-7">Inovação em Gestão no Saneamento – IGS</span>
                                 </b-radio>
-                                <b-radio v-model="subscription_category_id" native-value="2">
+                                <b-radio v-model="subscription.subscription_category_id" native-value="2">
                                     <span class="is-size-7">Eficiência Operacional no Saneamento – PEOS</span>
                                 </b-radio>
-                                <b-radio v-model="subscription_category_id" native-value="3">
+                                <b-radio v-model="subscription.subscription_category_id" native-value="3">
                                     <span class="is-size-7">As Melhores de Gestão no Saneamento Ambiental – AMEGSA</span>
                                 </b-radio>
-                                <b-radio v-model="subscription_category_id" native-value="4">
+                                <b-radio v-model="subscription.subscription_category_id" native-value="4">
                                     <span class="is-size-7">Selo de Qualidade do Fornecedor da Prestação de Serviços e Insumos de Saneamento Ambiental – SQFSA</span>
                                 </b-radio>
                             </div>
@@ -378,6 +379,9 @@
 		<b-modal :active.sync="isPraticasModalActive" has-modal-card>
 			<praticas-modal :subscription="subscription" @added-practice="addPractice($event)"></praticas-modal>
 		</b-modal>
+        <b-modal :active.sync="showSublist" has-modal-card>
+            <sublist-modal @send-id="handleIdClicked($event)"></sublist-modal>
+        </b-modal>
         <b-message type="is-success" v-if="showAfterRegister">
              “Sua inscrição foi cadastrada sob nº {{ id }} com sucesso e em breve será analisada pelos consultores responsáveis. 
                 Para acompanhar o status da sua ficha basta acessar o sistema novamente com seu login a qualquer momento.
@@ -390,6 +394,7 @@
 
 import CommonData from './New/CommonData.vue'
 import PraticasModal from './New/PraticasModal.vue'
+import SublistModal from "./New/SublistModal";
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import SubscriptionService from '../../services/subscription.service'
 import store from '../../store/index'
@@ -397,7 +402,8 @@ import store from '../../store/index'
 export default {
 	components: {
 		PraticasModal,
-		CommonData,
+        CommonData,
+        SublistModal,
         ValidationProvider,
         ValidationObserver
 	},
@@ -414,6 +420,7 @@ export default {
             },
             errors: [],
             id: null,
+            showSublist: false,
             showAfterRegister: false,
 			isPraticasModalActive: false,
             subgroup_ids: []
@@ -433,12 +440,7 @@ export default {
 			}
             this.subscription.subscription_category_id = newValue
             store.commit('subscription/setSubscription', this.subscription)
-        },
-        /* "subscription.subgroup_ids"(val) {
-            this.subscription.subgroup_ids.includes(val) 
-                ? this.subscription.subgroup_ids.splice(this.subscription.subgroup_ids.indexOf(val), 1)
-                : this.subscription.subgroup_ids.push(val)
-        } */
+        }
 	},
 	created(){
 
@@ -498,7 +500,10 @@ export default {
 			if (indexOf >= 0) {
 				this.subscription.practices.splice(indexOf, 1)
 			}
-		}
+        },
+        handleIdClicked(id) {
+            SubscriptionService.show(id).then(resp => this.subscription = resp)
+        }
 	}
 }
 
