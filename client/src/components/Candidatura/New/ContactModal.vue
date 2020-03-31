@@ -8,7 +8,7 @@
                 <form @submit.prevent="saveContact">
                     <div class="columns">
                         <div class="column">
-                            <b-field :label="label">
+                            <b-field label="Tipo de Contato">
                                 <ValidationProvider name="categoria" rules="required" v-slot="{ errors }">
                                     <b-select v-model="editContact.type" name="categoria">
                                         <option :value="category.key" 
@@ -80,8 +80,7 @@ export default {
                 { key: "APR", val: 'Apresentador do Case  no Seminário de benchmarking' },
                 { key: "REP", val: 'Representante no Seminário de benchmarking' },
                 { key: "FOR", val: 'Fornecedor indicado' }
-            ], 
-            label: `${this.subscription.subscription_category_id === '4' ? 'Tipo de' : 'Categoria do'} Contato`
+            ] 
 		}
 	},
 	created(){
