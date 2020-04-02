@@ -14,7 +14,7 @@
         </div>
         <div class="columns">
             <div class="column">
-                <b-field label="Razão Social">
+                <b-field label="Razão Social (responsável)">
                     <ValidationProvider name="name" rules="required" v-slot="{ errors }">
                         <b-input :disabled="canEdit" name="name" v-model="editedSubscription.name"></b-input>
                         <span style="color: red">{{ errors[0] }}</span>
@@ -22,7 +22,7 @@
                 </b-field>
             </div>
             <div class="column">
-                <b-field label="Candidata (Responsável)">
+                <b-field label="Denominação da candidata">
                     <ValidationProvider name="cadidate" rules="required" v-slot="{ errors }">
                         <b-input :disabled="canEdit" name="cadidate" v-model="editedSubscription.candidate"></b-input>
                         <span style="color: red">{{ errors[0] }}</span>
@@ -76,6 +76,7 @@
                         <span style="color: red">{{ errors[0] }}</span>
                     </ValidationProvider>
                 </b-field>
+                <p class="help is-danger">Com mais de um ano de existência. Anterior a 2019.</p>
             </div>
         </div>
         <div class="columns">

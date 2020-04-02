@@ -80,7 +80,7 @@
                                         <span class="is-size-7">Nível III - "Excelência"</span>
                                     </b-radio><br><br>
                                     <p class="control is-size-7 has-text-grey">
-                                        Nota: O <strong>SQFSA</strong> é destinado a organizações cpm CNPJ próprio sediadas em território nacional, que 
+                                        Nota: O <strong>SQFSA</strong> é destinado a organizações com CNPJ próprio sediadas em território nacional, que 
                                         prestam serviços ou  fornecem insumos para organizações que detém a concessão (concessionárias) ou delegação 
                                         (departamentos ou autarquias municipais e afins) de serviços de saneamento ambiental.
                                     </p>
