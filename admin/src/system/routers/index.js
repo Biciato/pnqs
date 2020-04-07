@@ -7,6 +7,8 @@ import PedidosElegibilidade from "../../components/Pedidos/PedidosElegibilidade.
 import NotFound from "../../components/NotFound.vue";
 import DadosFormulario from "../../components/Pedidos/DadosFormulario.vue";
 import AuthService from '../../auth/AuthService';
+import Edit from '../../components/Pedidos/Edit.vue'
+
 const auth = new AuthService();
 const { requiresAuth } = auth;
 
@@ -34,6 +36,11 @@ const routes = [
 	{
 		path: "/dados-formulario/:id",
 		component: DadosFormulario,
+		beforeEnter: requiresAuth
+	},
+	{
+		path: "/editar-formulario/:id",
+		component: Edit,
 		beforeEnter: requiresAuth
 	}
 ];

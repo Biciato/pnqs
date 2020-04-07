@@ -6,11 +6,11 @@
 			<div class="columns" v-if="subscription.status != 'ANL' || subscription.status != 'DEV'">
 				<div class="column">
 					<strong class="has-text-grey">Parecer da Elegibilidade</strong>
-					<p><template v-if="subscription.status == 'APR'">Aprovado</template><template v-else-if="subscription.status == 'REP'">Reprovado</template><template v-else-if="subscription.status == 'DEV'">Devolvido</template></p>
+					<p class="has-text-info"><template v-if="subscription.status == 'APR'">Aprovado</template><template v-else-if="subscription.status == 'REP'">Reprovado</template><template v-else-if="subscription.status == 'DEV'">Devolvido</template></p>
 				</div>
 				<div class="column" v-if="subscription.status == 'REP' || subscription.status == 'DEV'">
 					<strong class="has-text-grey">Motivo</strong>
-					<p>{{subscription.status_reason}}</p>
+					<p class="has-text-info">{{subscription.status_reason}}</p>
 				</div>
 			</div>
 			<h2 class="title is-5">Selecione a categoria</h2>
@@ -625,6 +625,7 @@
 					</div>
 				</template>
 				<button class="button is-primary" @click="validate()" v-if="!canEdit">Enviar Candidatura</button>
+				<a href="/candidaturas" class="button is-info" style="margin-left: 0.5em">Voltar</a>
 			</template>
 		</div>
 
@@ -703,7 +704,8 @@ export default {
 					numericOnly: true
 				}
 			},
-			subgroup_ids: ["Água" ,"Esgoto e Efluentes Industriais"]
+			group_ids: [],
+			subgroup_ids: []
 		}
 	},
 	watch: {
@@ -748,6 +750,7 @@ export default {
 				this.getContacts()
 				this.getPlaces()
 				this.getSubgroupIds(this.subscription.subgroup_id)
+				this.getGroupIds(this.subscription.group_id)
 				this.subscription.agree_examiners = this.$R.toString(this.$R.or(store.getters['subscription/get'].agree_examiners, 0))
 			})
 		},
@@ -765,6 +768,15 @@ export default {
 		},
 		getPlaces(){
 			this.tablePlaces = this.subscription.places
+		},
+		getGroupIds(group_ids) {
+			if (group_ids) {
+				if (group_ids.length > 1) {
+					this.group_ids = group_ids.split(',').map(item => item.trim())
+				} else {
+					this.group_ids = this.group_ids.find(group_id => group_id.id === group_ids).name
+				}
+			} 
 		},
 		getSubgroupIds(subgroup_ids) {
 			if (subgroup_ids) {

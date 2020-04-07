@@ -75,12 +75,15 @@
 								<template v-if="props.row.status == 'ANL'">Em Análise</template>
 								<template v-else-if="props.row.status == 'APR'">Aprovado</template>
 								<template v-else-if="props.row.status == 'REP'">Reprovado</template>
-								<template v-else-if="props.row.status == 'DEV'">Em Revisão</template>
+								<template v-else-if="props.row.status == 'DEV'">Devolvido</template>
 							</span>
 						</b-table-column>
 						<b-table-column :field="'details'" :label="'#'">
 							<button class="button is-small" @click="$router.push(`/dados-formulario/${props.row.id}`)">
 								VER
+							</button>
+							<button class="button is-small is-info" style="margin-top: 0.5em" @click="$router.push(`/editar-formulario/${props.row.id}`)">
+								EDITAR
 							</button>
 						</b-table-column>
 					</template>

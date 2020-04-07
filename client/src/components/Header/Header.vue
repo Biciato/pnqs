@@ -24,12 +24,18 @@
 					</a>
 					<div class="navbar-dropdown">
 						<div style="display: flex; justify-content: center;">
+							<a href="#" @click="isRememberPassModalActive = true">Alterar Senha</a>
+						</div>
+						<div style="display: flex; justify-content: center;">
 							<a href="javascript:void(0);" @click="logout()">Sair</a>
 						</div>
 					</div>
 				</div>
 			</div>
 		</div>
+		<b-modal :active.sync="isRememberPassModalActive" :canCancel="true" has-modal-card>
+			<lost-password @cnpj-clicked="onCnpjClick"></lost-password>
+		</b-modal>
 	</nav>
 </template>
 <style>
@@ -43,11 +49,16 @@
 <script>
 import imageDev from '../../assets/logo-pnqs.png'
 import store from '../../store'
+import LostPassword from '../Auth/LostPassword'
 
 export default {
 	name: "Header",
+	components: {
+		LostPassword	
+	},
 	data() {
 		return {
+			isRememberPassModalActive: false,
 			image: process.env.NODE_ENV === "production"
                   ? 'dist/img/logo-pnqs.png'
                   : imageDev
@@ -59,6 +70,9 @@ export default {
 	methods: {
 		logout(){
 			store.dispatch('auth/logout')
+		},
+		onCnpjClick() {
+			this.$router.push("/update")
 		}
 	}
 }

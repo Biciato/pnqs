@@ -15,18 +15,12 @@
         <div class="columns">
             <div class="column">
                 <b-field label="Razão Social (responsável)">
-                    <ValidationProvider name="name" rules="required" v-slot="{ errors }">
-                        <b-input :disabled="canEdit" name="name" v-model="editedSubscription.name"></b-input>
-                        <span style="color: red">{{ errors[0] }}</span>
-                    </ValidationProvider>
+					<b-input :disabled="canEdit" name="name" v-model="editedSubscription.name"></b-input>
                 </b-field>
             </div>
             <div class="column">
                 <b-field label="Denominação da candidata">
-                    <ValidationProvider name="cadidate" rules="required" v-slot="{ errors }">
-                        <b-input :disabled="canEdit" name="cadidate" v-model="editedSubscription.candidate"></b-input>
-                        <span style="color: red">{{ errors[0] }}</span>
-                    </ValidationProvider>
+					<b-input :disabled="canEdit" name="cadidate" v-model="editedSubscription.candidate"></b-input>
                 </b-field>
             </div>
             <div class="column">
@@ -44,16 +38,12 @@
         <div class="columns">
             <div class="column">
                 <b-field label="CNPJ">
-                    <ValidationProvider name="document" rules="required|cnpj" v-slot="{ errors }">
-                        <b-input
-                            :disabled="canEdit"
-                            name="document"
-                            v-model="editedSubscription.document_id"
-                            v-cleave="masks.cnpj"
-                            maxlength="18"
-                        ></b-input>
-                        <span style="color: red">{{ errors[0] }}</span>
-                    </ValidationProvider>
+					<b-input
+						:disabled="canEdit"
+						name="document"
+						v-model="editedSubscription.document_id"
+						maxlength="18"
+					></b-input>
                 </b-field>
             </div>
             <div class="column">
@@ -63,18 +53,15 @@
             </div>
             <div class="column">
                 <b-field label="Data de início das atividades">
-                    <ValidationProvider name="data_atividade" rules="required" v-slot="{ errors }">
-                        <b-datepicker
-                            :disabled="canEdit"
-                            name="data_atividade"
-                            v-model="editedSubscription.economic_activity_start"
-                            :date-parser="date => formatDate(date)"
-                            :date-formatter="date => formatDateToInput(date)"
-                            placeholder="Selecione a data"
-                            icon="calendar-today"
-                        ></b-datepicker>
-                        <span style="color: red">{{ errors[0] }}</span>
-                    </ValidationProvider>
+					<b-datepicker
+						:disabled="canEdit"
+						name="data_atividade"
+						v-model="editedSubscription.economic_activity_start"
+						:date-parser="date => formatDate(date)"
+						:date-formatter="date => formatDateToInput(date)"
+						placeholder="Selecione a data"
+						icon="calendar-today"
+					></b-datepicker>
                 </b-field>
                 <p class="help is-danger" v-if="editedSubscription.subscription_category_id == 4">Com mais de um ano de existência. Anterior a 2019.</p>
             </div>
@@ -82,31 +69,25 @@
         <div class="columns">
             <div class="column">
                 <b-field label="Principais atividades">
-                    <ValidationProvider name="atividades" rules="required" v-slot="{ errors }">
-                        <b-input
-                            :disabled="canEdit"
-                            name="atividades"
-                            type="textarea"
-                            v-model="editedSubscription.economic_activities"
-                        ></b-input>
-                        <span style="color: red">{{ errors[0] }}</span>
-                    </ValidationProvider>
+					<b-input
+						:disabled="canEdit"
+						name="atividades"
+						type="textarea"
+						v-model="editedSubscription.economic_activities"
+					></b-input>
                 </b-field>
             </div>
         </div>
         <div class="columns">
             <div class="column is-two-fifths">
                 <b-field label="Quantidade de pessoas na força de trabalho">
-                    <ValidationProvider name="qtd_pessoas" rules="required" v-slot="{ errors }">
-                        <b-input
-                            :disabled="canEdit"
-                            name="qtd_pessoas"
-                            type="number"
-                            min="1" step="1"
-                            v-model="editedSubscription.persons_qt"
-                        ></b-input>
-                        <span style="color: red">{{ errors[0] }}</span>
-                    </ValidationProvider>
+					<b-input
+						:disabled="canEdit"
+						name="qtd_pessoas"
+						type="number"
+						min="1" step="1"
+						v-model="editedSubscription.persons_qt"
+					></b-input>
                 </b-field>
                 <p class="help is-danger">
                     Incluir terceiros que estejam sob coordenação da candidata.
@@ -275,18 +256,16 @@
 </template>
 
 <script>
-    import { ValidationProvider } from "vee-validate";
     import moment from "moment";
     import PlaceModal from "./PlaceModal.vue";
     import ContatoModal from "./ContactModal.vue";
-    import store from "../../../store/index";
+    import subscriptionApi from '../../api/subscription'
 
     export default {
-        props: ["subscription", "canEdit"],
+        props: ["subscription"],
         components: {
             PlaceModal,
             ContatoModal,
-            ValidationProvider,
         },
         data() {
             return {
@@ -295,7 +274,8 @@
                 isContatosModalActive: false,
                 editedSubscription: {
                     is_public: "0",
-                },
+				},
+				canEdit: false,
                 place: null,
                 contact: null,
                 masks: {
@@ -309,9 +289,12 @@
             };
         },
         watch: {
-            editedSubscription() {
-                store.commit("subscription/setSubscription", this.editedSubscription);
-            },
+			editedSubscription: {
+				handler: function() {
+					this.$emit('common-data', this.editedSubscription)
+				},
+				deep: true
+			}
         },
         created() {
             this.editedSubscription = this.subscription;

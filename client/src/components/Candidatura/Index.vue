@@ -32,7 +32,7 @@
 								<template v-if="props.row.status == 'ANL'">Em Análise</template>
 								<template v-else-if="props.row.status == 'APR'">Aprovado</template>
 								<template v-else-if="props.row.status == 'REP'">Reprovado</template>
-								<template v-else-if="props.row.status == 'DEV'">Em Revisão</template>
+								<template v-else-if="props.row.status == 'DEV'">Devolvido</template>
 							</span>
 						</b-table-column>
 						<b-table-column width="200" :field="''" :label="''">

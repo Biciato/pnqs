@@ -1,7 +1,7 @@
 <template>
 	<section class="section">
-        <ValidationObserver v-slot="{ handleSubmit }" v-if="!showAfterRegister">
-            <form @submit.prevent="handleSubmit(validate)">
+        <ValidationObserver ref="form">
+            <form @submit.prevent="validate">
                 <div class="box">
                     <div class="columns">
                         <div class="column">
@@ -89,21 +89,21 @@
                                     <div class="column">
                                         <h5 class="title is-6">Atuação na Região</h5>
                                         <div class="block">
-                                            <b-radio v-model="subscription.group_id" native-value="3">
+                                            <b-checkbox v-model="group_ids" native-value="Norte">
                                                 Norte
-                                            </b-radio>
-                                            <b-radio v-model="subscription.group_id" native-value="4">
+                                            </b-checkbox>
+                                            <b-checkbox v-model="group_ids" native-value="Nordeste">
                                                 Nordeste
-                                            </b-radio>
-                                            <b-radio v-model="subscription.group_id" native-value="5">
+                                            </b-checkbox>
+                                            <b-checkbox v-model="group_ids" native-value="Centro-oeste">
                                                 Centro-oeste
-                                            </b-radio>
-                                            <b-radio v-model="subscription.group_id" native-value="6">
+                                            </b-checkbox>
+                                            <b-checkbox v-model="group_ids" native-value="Sul">
                                                 Sul
-                                            </b-radio>
-                                            <b-radio v-model="subscription.group_id" native-value="7">
+                                            </b-checkbox>
+                                            <b-checkbox v-model="group_ids" native-value="Sudeste">
                                                 Sudeste
-                                            </b-radio>
+                                            </b-checkbox>
                                         </div>
                                     </div>
                                 </div>
@@ -213,7 +213,7 @@
                                     </b-field>
                                 </div>
                                 <div class="column">
-                                    <b-field label="Questões dos Critérios categoria AMEGSA Nível III com os quais a prática tem mais relação: (Ex.: 2.a, 3.1d e 8.2a)">
+                                    <b-field label="Questões dos Critérios categoria AMEGSA Nível III com os quais a prática tem mais relação: (Ex.: 2.2a, 3.1d e 8.2a)">
                                         <b-input v-model="subscription.criteria_questions"></b-input>
                                     </b-field>
                                 </div>
@@ -362,16 +362,15 @@
                             <div class="columns">
                                 <div class="column">
                                     <b-checkbox v-model="subscription.agree_examiners" native-value="0">
-                                        Concordamos com a participação de empregados de empresas do setor, sem conflitos de interesses com a Banca examinadora
-                                        como acompanhantes da banca de examinadores (aplicável as organizações candidatas ao Nível B 125 pontos, 
-                                        também denominado “Primeiros Passos para a Excelência” e Nível I 250 pontos, também denominado de “Compromisso com a 
-                                        Excelência”).
+                                        Concordamos com a participação de voluntários, empregados de empresas do setor de saneamento ambiental,
+                                         sem conflitos de interesse, na Banca Examinadora designada para a avaliação.
                                     </b-checkbox>
                                 </div>
                             </div>
                         </template>
                         <br><br>
                         <button class="button is-primary" :class="{'is-loading': isLoading}">Enviar Candidatura</button>
+                        <a href="/candidaturas" class="button is-info" style="margin-left: 0.5em">Voltar</a>
                     </template>
                 </div>
             </form>
@@ -385,7 +384,8 @@
         <b-message type="is-success" v-if="showAfterRegister">
              “Sua inscrição foi cadastrada sob nº {{ id }} com sucesso e em breve será analisada pelos consultores responsáveis. 
                 Para acompanhar o status da sua ficha basta acessar o sistema novamente com seu login a qualquer momento.
-                Imprima esta página, ela é o seu comprovante de submissão da ficha de elegibilidade”
+                Imprima esta página, ela é o seu comprovante de submissão da ficha de elegibilidade. <br>
+                <b>Imprima essa tela, ou salve como PDF ela será o seu comprovante de cadastro.”</b>
         </b-message>
 	</section>
 </template>
@@ -398,6 +398,7 @@ import SublistModal from "./New/SublistModal";
 import { ValidationProvider, ValidationObserver } from 'vee-validate';
 import SubscriptionService from '../../services/subscription.service'
 import store from '../../store/index'
+import moment from 'moment'
 
 export default {
 	components: {
@@ -422,7 +423,8 @@ export default {
             id: null,
             showSublist: false,
             showAfterRegister: false,
-			isPraticasModalActive: false,
+            isPraticasModalActive: false,
+            group_ids: [],
             subgroup_ids: []
 		}
 	},
@@ -447,38 +449,48 @@ export default {
 	},
 	methods: {
 		validate(){
-            if (this.subscription.places.length < 1) {
-                    this.$buefy.dialog.alert({
-                        title: 'Aviso',
-                        message: 'É obrigatório enviar ao menos um local da instalação com força de trabalho.',
-                        confirmText: 'Ok!'
-                    })
-            }
-            if (this.subscription.subscription_category_id === 3) {
-                if (this.subscription.practices.length < 1) {
-                        this.$buefy.dialog.alert({
+            this.$refs.form.validate().then(success => {
+                if (!success) {
+                    return this.$buefy.dialog.alert({
                             title: 'Aviso',
-                            message: 'Favor cadastrar pelo menos 1 Prática',
+                            message: 'Por favor, preencha todos os campos necesários.',
                             confirmText: 'Ok!'
                         })
                 }
-                if (
-                    this.subscription.practices.length > 0 &&
-                    this.subscription.places.length > 0
-                ) {
-                    this.save()
+                if (this.subscription.places.length < 1) {
+                        this.$buefy.dialog.alert({
+                            title: 'Aviso',
+                            message: 'É obrigatório enviar ao menos um local da instalação com força de trabalho.',
+                            confirmText: 'Ok!'
+                        })
                 }
-            } else {
-                if (
-                    this.subscription.places.length > 0
-                ) {
-                    this.save()
+                if (this.subscription.subscription_category_id === 3) {
+                    if (this.subscription.practices.length < 1) {
+                            this.$buefy.dialog.alert({
+                                title: 'Aviso',
+                                message: 'Favor cadastrar pelo menos 1 Prática',
+                                confirmText: 'Ok!'
+                            })
+                    }
+                    if (
+                        this.subscription.practices.length > 0 &&
+                        this.subscription.places.length > 0
+                    ) {
+                        this.save()
+                    }
+                } else {
+                    if (
+                        this.subscription.places.length > 0
+                    ) {
+                        this.save()
+                    }
                 }
-            }
+            })
         },
         save() {
             this.isLoading = true
             this.subscription.subgroup_id = this.subgroup_ids.join()
+            this.subscription.group_id = this.group_ids.join()
             SubscriptionService.store(this.subscription).then(resp => {
                 this.isLoading = false
                 this.$buefy.toast.open({
@@ -487,9 +499,12 @@ export default {
                 })
                 this.id = resp.id
                 this.showAfterRegister = true
-            }).catch((error) => {
+            }).catch(() => {
                 this.isLoading = false
-                alert(error)
+                this.$buefy.toast.open({
+                    message: 'Algo deu errado. Por favor, tente mais tarde ou contate o administrador!',
+                    type: 'is-error'
+                })
             })
         },
 		addPractice(practice){
@@ -502,8 +517,65 @@ export default {
 			}
         },
         handleIdClicked(id) {
-            SubscriptionService.show(id).then(resp => this.subscription = resp)
-        }
+            SubscriptionService.show(id).then(resp => {
+                this.subscription = resp
+                this.subscription.economic_activity_start = new Date(resp["economic_activity_start"]),
+                this.subscription.implantation_start_dt = new Date(resp["implantation_start_dt"])
+                delete this.subscription["id"]
+                delete this.subscription["user"]
+                delete this.subscription["created_at"]
+                delete this.subscription["updated_at"]
+				delete this.subscription["companysize"]
+                delete this.subscription["subcategory"]
+				delete this.subscription["category"]
+				delete this.subscription["group"]
+                delete this.subscription["subgroup"]
+                this.getContacts()
+				this.getPlaces()
+				this.getSubgroupIds(this.subscription.subgroup_id)
+				this.getGroupIds(this.subscription.group_id)
+            })
+        },
+        getContacts(){
+			for (var i = 0; i < this.subscription.contacts.length; i++) {
+				if(this.subscription.contacts[i].type == "DIR")
+					this.dirigente = this.subscription.contacts[i]
+				if(this.subscription.contacts[i].type == "APR")
+					this.apresentador = this.subscription.contacts[i]
+				if(this.subscription.contacts[i].type == "RES")
+					this.responsavel = this.subscription.contacts[i]
+				if(this.subscription.contacts[i].type == "REP")
+					this.representante = this.subscription.contacts[i]
+			}
+		},
+		getPlaces(){
+			this.tablePlaces = this.subscription.places
+		},
+		getGroupIds(group_ids) {
+			if (group_ids) {
+				if (group_ids.length > 1) {
+					this.group_ids = group_ids.split(',').map(item => item.trim())
+				} else {
+					this.group_ids = this.group_ids.find(group_id => group_id.id === group_ids).name
+				}
+			} 
+		},
+		getSubgroupIds(subgroup_ids) {
+			if (subgroup_ids) {
+				if (subgroup_ids.length > 1) {
+					this.subgroup_ids = subgroup_ids.split(',').map(item => item.trim())
+				} else {
+					this.subgroup_ids = this.subgroups.find(subgroup => subgroup.id === subgroup_ids).name
+				}
+			} 
+		},
+		formatDateToInput(date){
+			return moment(Date.parse(date)).format('DD/MM/YYYY')
+		},
+		formatDate(date){
+			return moment(Date.parse(date)).format('YYYY-MM-DD')
+		},
+        
 	}
 }
 

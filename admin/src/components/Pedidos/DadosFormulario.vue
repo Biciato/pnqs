@@ -97,7 +97,7 @@
 				<h6 class="is-size-4">Locais das instalações com força de trabalho</h6>
 				<hr>
 				<template v-for="place in subscription.places">
-					<div class="columns">
+					<div class="columns" v-bind:key="place">
 						<div class="column">
 							<strong class="has-text-grey">Nome:</strong>
 							<p>{{place.name}}</p>
@@ -451,11 +451,11 @@
 						</div>
 					</div>
 				</template>
-				<div class="columns is-centered" v-if="subscription.status == 'ANL'">
+				<div class="columns is-centered">
 					<div class="column">
-						<button class="button is-success" @click="approve()">Aprovar</button>
-						<button class="button is-warning" @click="isReviewModalActive = true">Devolver</button>
-						<button class="button is-danger" @click="isRepproveModalActive = true"> Reprovar </button>
+						<button class="button is-success" @click="approve()" :disabled="subscription.status === 'APR'">Aprovar</button>
+						<button class="button is-warning" @click="isReviewModalActive = true" :disabled="subscription.status === 'DEV'">Devolver</button>
+						<button class="button is-danger" @click="isRepproveModalActive = true" :disabled="subscription.status === 'REP'"> Reprovar </button>
 						<button class="button is-info" @click="remove()"> Cancelar </button>
 						<button class="button" @click="$router.push('/pedidos-elegibilidade')">Voltar</button>
 					</div>
